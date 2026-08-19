@@ -2343,24 +2343,6 @@ input, select, textarea {
     margin: 0;
 }
 
-.github-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.github-link:hover {
-    color: var(--primary-color);
-}
-
-.github-link svg {
-    width: 24px;
-    height: 24px;
-}
-
 /* ===========================================
    Responsive Styles for Landing Page
    =========================================== */
@@ -3460,4 +3442,3 @@ input, select, textarea {
         background: #fff;
     }
 }
-                  
