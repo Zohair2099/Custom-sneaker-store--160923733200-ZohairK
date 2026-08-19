@@ -66,6 +66,74 @@ function renderOrderSummary() {
     document.getElementById('summary-total').textContent = `$${total.toFixed(2)}`;
 }
 
+// Get selected delivery method
+function getSelectedDeliveryMethod() {
+    const radio = document.querySelector('input[name="deliveryMethod"]:checked');
+    if (!radio) return { value: 'standard', days: 5, cost: 0 };
+    return {
+        value: radio.value,
+        days: parseInt(radio.dataset.days),
+        cost: parseFloat(radio.dataset.cost)
+    };
+}
+
+// Get shipping cost including delivery method
+function getShippingCost() {
+    const subtotal = getCartSubtotal();
+    const baseShipping = subtotal >= 100 ? 0 : 9.99;
+    const delivery = getSelectedDeliveryMethod();
+    return baseShipping + delivery.cost;
+}
+
+// Update order summary with delivery method
+function updateDeliverySummary() {
+    const delivery = getSelectedDeliveryMethod();
+    const shippingEl = document.getElementById('summary-shipping');
+    const totalEl = document.getElementById('summary-total');
+
+    if (shippingEl) {
+        const shippingCost = getShippingCost();
+        shippingEl.textContent = shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`;
+    }
+    if (totalEl) {
+        const subtotal = getCartSubtotal();
+        const shipping = getShippingCost();
+        const tax = getTaxAmount();
+        const total = subtotal + shipping + tax;
+        totalEl.textContent = `$${total.toFixed(2)}`;
+    }
+}
+
+// Update shipping details if visible (COD step 2)
+function updateShippingDetailsIfVisible() {
+    const shippingSection = document.getElementById('shipping-details-section');
+    if (shippingSection && shippingSection.classList.contains('visible')) {
+        const delivery = getSelectedDeliveryMethod();
+        const now = new Date();
+        const deliveryDate = new Date(now.getTime() + delivery.days * 24 * 60 * 60 * 1000);
+        const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const estimatedDeliveryEl = shippingSection.querySelector('.shipping-detail-value:nth-of-type(2)');
+        if (estimatedDeliveryEl) {
+            estimatedDeliveryEl.textContent = `${deliveryDateStr} (${delivery.days} business days)`;
+        }
+
+        const amountEl = shippingSection.querySelector('.shipping-detail-value:last-of-type');
+        if (amountEl) {
+            const subtotal = getCartSubtotal();
+            const shipping = getShippingCost();
+            const tax = getTaxAmount();
+            const total = subtotal + shipping + tax;
+            amountEl.textContent = `$${total.toFixed(2)}`;
+        }
+    }
+}
+
 // Setup form validation
 function setupFormValidation() {
     const form = document.getElementById('payment-form');
@@ -85,6 +153,8 @@ function setupFormValidation() {
                 const el = document.getElementById(id);
                 if (el) clearError(el);
             });
+            // Update summary with default delivery method
+            updateDeliverySummary();
         } else {
             cardSection.style.display = 'block';
             codSection.style.display = 'none';
@@ -93,6 +163,15 @@ function setupFormValidation() {
 
     methodRadios.forEach(radio => {
         radio.addEventListener('change', togglePaymentMethod);
+    });
+
+    // Delivery method selector (COD)
+    const deliveryRadios = form.querySelectorAll('input[name="deliveryMethod"]');
+    deliveryRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            updateDeliverySummary();
+            updateShippingDetailsIfVisible();
+        });
     });
 
     // Add input event listeners for real-time validation
@@ -456,8 +535,9 @@ function handleCODFlow(submitBtn, submitBtnText) {
 
 // Generate shipping details for COD
 function generateShippingDetails(orderId) {
+    const delivery = getSelectedDeliveryMethod();
     const now = new Date();
-    const deliveryDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
+    const deliveryDate = new Date(now.getTime() + delivery.days * 24 * 60 * 60 * 1000);
     const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
         weekday: 'long',
         year: 'numeric',
@@ -489,7 +569,11 @@ function generateShippingDetails(orderId) {
         </div>
         <div class="shipping-detail-row">
             <div class="shipping-detail-label">Estimated Delivery</div>
-            <div class="shipping-detail-value">${deliveryDateStr} (3 business days)</div>
+            <div class="shipping-detail-value">${deliveryDateStr} (${delivery.days} business days)</div>
+        </div>
+        <div class="shipping-detail-row">
+            <div class="shipping-detail-label">Delivery Method</div>
+            <div class="shipping-detail-value">${delivery.value === 'standard' ? 'Standard' : 'Express'}</div>
         </div>
         <div class="shipping-detail-row">
             <div class="shipping-detail-label">Shipping Address</div>
@@ -533,9 +617,11 @@ function showOrderSuccess(orderId, method) {
 
     // Update success message based on payment method
     if (method === 'cod') {
+        const delivery = getSelectedDeliveryMethod();
+        const daysText = delivery.days <= 2 ? '1-2 business days' : '3-5 business days';
         modalContent.querySelector('h2').textContent = 'Order Placed!';
         modalContent.querySelector('.success-message').textContent = 'Your order has been confirmed. You will pay on delivery.';
-        modalContent.querySelector('.success-details').textContent = 'Your order will be delivered within 3-5 business days. Please have cash ready.';
+        modalContent.querySelector('.success-details').textContent = `Your order will be delivered within ${daysText}. Please have cash ready.`;
     } else {
         modalContent.querySelector('h2').textContent = 'Payment Successful!';
         modalContent.querySelector('.success-message').textContent = 'Your order has been confirmed and payment processed.';

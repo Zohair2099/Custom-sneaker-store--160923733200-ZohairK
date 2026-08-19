@@ -3310,6 +3310,76 @@ input, select, textarea {
     line-height: 1.5;
 }
 
+/* Delivery Options (COD) */
+.delivery-options {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.delivery-options-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.delivery-option {
+    display: block;
+    cursor: pointer;
+}
+
+.delivery-option + .delivery-option {
+    margin-top: 10px;
+}
+
+.delivery-option input[type="radio"] {
+    display: none;
+}
+
+.delivery-option-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.delivery-option input[type="radio"]:checked + .delivery-option-card {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 53, 0.05);
+    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+}
+
+.delivery-option-card:hover {
+    border-color: var(--primary-color);
+}
+
+.delivery-option-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.delivery-option-info strong {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.delivery-option-info span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.delivery-option-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
 /* Shipping Details Section (COD) */
 .shipping-details-section {
     opacity: 0;
