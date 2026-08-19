@@ -26,12 +26,14 @@ function initOrderConfirmation() {
     document.getElementById('confirmation-address').textContent =
         `${order.fullName}, ${order.address}, ${order.city} ${order.postal}, Phone: ${order.phone}`;
 
-    const deliveryText = order.deliveryMethod === 'Standard'
-        ? `Standard Delivery (${order.deliveryDays} business days)`
-        : `Express Delivery (${order.deliveryDays} business days)`;
+    const paymentMethodText = order.paymentMethod === 'COD'
+        ? 'Cash on Delivery'
+        : order.paymentMethod === 'UPI'
+            ? 'UPI Payment'
+            : 'Credit / Debit Card';
 
     document.getElementById('confirmation-delivery').textContent =
-        `${deliveryText} - Estimated: ${order.deliveryDate}`;
+        `${paymentMethodText} - Estimated delivery: ${order.deliveryDate}`;
 
     document.getElementById('confirmation-total').textContent = `$${order.total.toFixed(2)}`;
 

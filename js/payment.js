@@ -284,8 +284,8 @@ function validateForm() {
     const inputs = form.querySelectorAll('input[required], textarea[required]');
     let isValid = true;
 
-    // Always required: full-name, phone, address
-    const alwaysRequired = ['full-name', 'phone', 'address'];
+    // Always required: full-name, email, phone, address
+    const alwaysRequired = ['full-name', 'email', 'phone', 'address'];
     alwaysRequired.forEach(id => {
         const input = document.getElementById(id);
         if (input && !validateField(input)) {
@@ -379,9 +379,14 @@ function processPayment() {
         });
 
         const fullName = document.getElementById('full-name').value;
+        const email = document.getElementById('email')?.value || '';
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
-        const email = document.getElementById('email')?.value || '';
+
+        // Parse city and postal from address (simple extraction)
+        const addressParts = address.split(',').map(p => p.trim());
+        const city = addressParts[addressParts.length - 2] || '';
+        const postal = addressParts[addressParts.length - 1] || '';
 
         const subtotal = getCartSubtotal();
         const shipping = getShippingCost();
@@ -393,9 +398,11 @@ function processPayment() {
         const orderData = {
             orderId: orderId,
             fullName: fullName,
+            email: email,
             phone: phone,
             address: address,
-            email: email,
+            city: city,
+            postal: postal,
             paymentMethod: paymentMethod.toUpperCase(),
             deliveryDays: 5,
             deliveryDate: deliveryDateStr,
