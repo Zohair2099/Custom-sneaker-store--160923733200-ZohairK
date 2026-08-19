@@ -97,6 +97,9 @@ This project demonstrates proficiency in:
 | **Products** | `products.html` | Full catalog with search, filter, sort functionality |
 | **Cart** | `cart.html` | Shopping cart management with totals |
 | **Payment** | `payment.html` | Checkout form with validation and order confirmation |
+| **Terms of Use** | `terms-of-use.html` | Terms and conditions for site usage |
+| **Privacy Policy** | `privacy-policy.html` | Data collection and privacy practices |
+| **Store Claim Policy** | `store-claim-policy.html` | Returns, refunds, and claims process |
 
 ---
 
@@ -126,6 +129,9 @@ sneaker-store/
 ├── products.html           # Products catalog
 ├── cart.html               # Shopping cart
 ├── payment.html            # Checkout page
+├── terms-of-use.html       # Terms of use page
+├── privacy-policy.html     # Privacy policy page
+├── store-claim-policy.html # Store claim policy page
 ├── README.md               # This documentation
 ├── .gitignore              # Git ignore patterns
 ├── css/
