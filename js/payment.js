@@ -1,213 +1,248 @@
 // ===========================================
-// Payment Module for Sneaker Store
+// Payment Module for SneakerHub
 // ===========================================
+
+// Initialize payment page
+document.addEventListener('DOMContentLoaded', function() {
+    initPaymentPage();
+});
 
 // Initialize payment page
 function initPaymentPage() {
     loadCart();
-    renderOrderSummary();
-    setupFormValidation();
+
+    if (cart.length === 0) {
+        showEmptyCart();
+    } else {
+        renderOrderSummary();
+        setupFormValidation();
+    }
+}
+
+// Show empty cart message
+function showEmptyCart() {
+    document.getElementById('empty-cart-message').style.display = 'flex';
+    document.getElementById('payment-content').style.display = 'none';
 }
 
 // Render order summary
 function renderOrderSummary() {
-    const summaryContainer = document.getElementById('order-summary');
-    const emptyCartMessage = document.getElementById('empty-cart-payment');
-    const paymentForm = document.getElementById('payment-form-container');
+    const summaryItems = document.getElementById('summary-items');
+    const itemCount = document.getElementById('item-count');
 
-    if (!summaryContainer) return;
-
-    if (cart.length === 0) {
-        if (emptyCartMessage) emptyCartMessage.style.display = 'block';
-        if (paymentForm) paymentForm.style.display = 'none';
-        return;
-    }
-
-    if (emptyCartMessage) emptyCartMessage.style.display = 'none';
-    if (paymentForm) paymentForm.style.display = 'block';
-
-    // Render summary items
-    summaryContainer.innerHTML = cart.map(item => `
-        <div class="summary-item">
-            <div class="summary-item-info">
-                <img src="${item.image}" alt="${item.name}" class="summary-item-image">
-                <div class="summary-item-details">
-                    <p class="summary-item-name">${item.name}</p>
-                    <p class="summary-item-meta">Size: ${item.size} | Qty: ${item.quantity}</p>
-                </div>
-            </div>
-            <p class="summary-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
-        </div>
-    `).join('');
-
-    // Update totals
-    updatePaymentTotals();
-}
-
-// Update payment totals
-function updatePaymentTotals() {
+    // Calculate totals
     const subtotal = getCartSubtotal();
     const shipping = getShippingCost();
     const tax = getTaxAmount();
     const total = getGrandTotal();
 
-    document.getElementById('payment-subtotal').textContent = `$${subtotal.toFixed(2)}`;
-    document.getElementById('payment-shipping').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
-    document.getElementById('payment-tax').textContent = `$${tax.toFixed(2)}`;
-    document.getElementById('payment-total').textContent = `$${total.toFixed(2)}`;
+    // Render items
+    summaryItems.innerHTML = cart.map(item => {
+        const product = getProductById(item.productId);
+        if (!product) return '';
+
+        return `
+            <div class="summary-item">
+                <img src="${product.image}" alt="${product.name}" class="summary-item-image">
+                <div class="summary-item-details">
+                    <h4>${product.name}</h4>
+                    <p>Size: ${item.size} | Qty: ${item.quantity}</p>
+                </div>
+                <div class="summary-item-price">
+                    $${(product.price * item.quantity).toFixed(2)}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Update item count
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    itemCount.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+
+    // Update totals
+    document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('summary-shipping').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+    document.getElementById('summary-tax').textContent = `$${tax.toFixed(2)}`;
+    document.getElementById('summary-total').textContent = `$${total.toFixed(2)}`;
 }
 
 // Setup form validation
 function setupFormValidation() {
     const form = document.getElementById('payment-form');
-    if (!form) return;
+    const inputs = form.querySelectorAll('input');
 
     // Add input event listeners for real-time validation
-    const inputs = form.querySelectorAll('input');
     inputs.forEach(input => {
-        input.addEventListener('blur', () => validateField(input));
-        input.addEventListener('input', () => clearError(input));
+        input.addEventListener('input', function() {
+            // Format specific fields
+            if (input.id === 'card-number') {
+                formatCardNumber(input);
+            } else if (input.id === 'expiry') {
+                formatExpiryDate(input);
+            } else if (input.id === 'cvv') {
+                input.value = input.value.replace(/\D/g, '').substring(0, 4);
+            } else if (input.id === 'phone') {
+                input.value = input.value.replace(/\D/g, '').substring(0, 10);
+            } else if (input.id === 'postal') {
+                input.value = input.value.replace(/[^0-9a-zA-Z]/g, '').substring(0, 6);
+            }
+
+            // Validate field
+            validateField(input);
+        });
+
+        // Validate on blur
+        input.addEventListener('blur', function() {
+            validateField(input);
+        });
+
+        // Clear error on focus
+        input.addEventListener('focus', function() {
+            clearError(input);
+        });
     });
 
     // Form submission
-    form.addEventListener('submit', handlePaymentSubmit);
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validate all fields
+        let isValid = true;
+        inputs.forEach(input => {
+            if (!validateField(input)) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            showNotification('Please fix the errors in the form', 'error');
+            // Scroll to first error
+            const firstError = form.querySelector('.form-group.error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        // Process payment
+        processPayment();
+    });
 }
 
 // Validate individual field
 function validateField(input) {
     const value = input.value.trim();
-    const name = input.name;
-    let isValid = true;
+    const id = input.id;
     let errorMessage = '';
 
-    switch(name) {
-        case 'fullName':
+    // Validation rules
+    switch (id) {
+        case 'full-name':
             if (!value) {
-                isValid = false;
                 errorMessage = 'Full name is required';
             } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-                isValid = false;
                 errorMessage = 'Name should contain only letters and spaces';
             } else if (value.length < 2) {
-                isValid = false;
                 errorMessage = 'Name must be at least 2 characters';
             }
             break;
 
         case 'email':
             if (!value) {
-                isValid = false;
-                errorMessage = 'Email is required';
+                errorMessage = 'Email address is required';
             } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                isValid = false;
                 errorMessage = 'Please enter a valid email address';
             }
             break;
 
         case 'phone':
             if (!value) {
-                isValid = false;
                 errorMessage = 'Phone number is required';
-            } else if (!/^\d{10}$/.test(value.replace(/[\s-]/g, ''))) {
-                isValid = false;
+            } else if (value.length < 10) {
                 errorMessage = 'Phone number must be 10 digits';
             }
             break;
 
         case 'address':
             if (!value) {
-                isValid = false;
-                errorMessage = 'Address is required';
+                errorMessage = 'Street address is required';
             } else if (value.length < 5) {
-                isValid = false;
                 errorMessage = 'Please enter a complete address';
             }
             break;
 
         case 'city':
             if (!value) {
-                isValid = false;
                 errorMessage = 'City is required';
             } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-                isValid = false;
                 errorMessage = 'City should contain only letters';
             }
             break;
 
-        case 'postalCode':
+        case 'postal':
             if (!value) {
-                isValid = false;
                 errorMessage = 'Postal code is required';
-            } else if (!/^\d{5,6}$/.test(value)) {
-                isValid = false;
-                errorMessage = 'Postal code must be 5-6 digits';
+            } else if (value.length < 5) {
+                errorMessage = 'Postal code must be at least 5 characters';
             }
             break;
 
-        case 'cardholderName':
+        case 'cardholder':
             if (!value) {
-                isValid = false;
                 errorMessage = 'Cardholder name is required';
             } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-                isValid = false;
                 errorMessage = 'Name should contain only letters and spaces';
             }
             break;
 
-        case 'cardNumber':
-            const cardNum = value.replace(/\s/g, '');
-            if (!cardNum) {
-                isValid = false;
+        case 'card-number':
+            const cardNumber = value.replace(/\s/g, '');
+            if (!cardNumber) {
                 errorMessage = 'Card number is required';
-            } else if (!/^\d{16}$/.test(cardNum)) {
-                isValid = false;
+            } else if (cardNumber.length < 16) {
                 errorMessage = 'Card number must be 16 digits';
-            } else if (!luhnCheck(cardNum)) {
-                isValid = false;
+            } else if (!luhnCheck(cardNumber)) {
                 errorMessage = 'Invalid card number';
             }
             break;
 
-        case 'expiryDate':
+        case 'expiry':
             if (!value) {
-                isValid = false;
                 errorMessage = 'Expiry date is required';
-            } else if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(value)) {
-                isValid = false;
+            } else if (!/^\d{2}\/\d{2}$/.test(value)) {
                 errorMessage = 'Use MM/YY format';
             } else {
-                const [month, year] = value.split('/');
-                const now = new Date();
-                const currentYear = now.getFullYear() % 100;
-                const currentMonth = now.getMonth() + 1;
-                const expYear = parseInt(year);
-                const expMonth = parseInt(month);
-
-                if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
-                    isValid = false;
-                    errorMessage = 'Card has expired';
+                const [month, year] = value.split('/').map(Number);
+                if (month < 1 || month > 12) {
+                    errorMessage = 'Invalid month (01-12)';
+                } else {
+                    const now = new Date();
+                    const currentYear = now.getFullYear() % 100;
+                    const currentMonth = now.getMonth() + 1;
+                    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                        errorMessage = 'Card has expired';
+                    }
                 }
             }
             break;
 
         case 'cvv':
             if (!value) {
-                isValid = false;
                 errorMessage = 'CVV is required';
-            } else if (!/^\d{3,4}$/.test(value)) {
-                isValid = false;
+            } else if (value.length < 3) {
                 errorMessage = 'CVV must be 3 or 4 digits';
             }
             break;
     }
 
-    if (!isValid) {
+    // Show or clear error
+    if (errorMessage) {
         showError(input, errorMessage);
+        return false;
     } else {
         clearError(input);
+        return true;
     }
-
-    return isValid;
 }
 
 // Luhn algorithm for card validation
@@ -216,7 +251,7 @@ function luhnCheck(cardNumber) {
     let isEven = false;
 
     for (let i = cardNumber.length - 1; i >= 0; i--) {
-        let digit = parseInt(cardNumber[i]);
+        let digit = parseInt(cardNumber[i], 10);
 
         if (isEven) {
             digit *= 2;
@@ -235,116 +270,31 @@ function luhnCheck(cardNumber) {
 // Show error message
 function showError(input, message) {
     const formGroup = input.closest('.form-group');
-    if (!formGroup) return;
-
+    formGroup.classList.add('error');
     input.classList.add('error');
 
-    let errorEl = formGroup.querySelector('.error-message');
-    if (!errorEl) {
-        errorEl = document.createElement('span');
-        errorEl.className = 'error-message';
-        formGroup.appendChild(errorEl);
-    }
+    const errorEl = formGroup.querySelector('.error-message');
     errorEl.textContent = message;
 }
 
 // Clear error message
 function clearError(input) {
     const formGroup = input.closest('.form-group');
-    if (!formGroup) return;
-
+    formGroup.classList.remove('error');
     input.classList.remove('error');
 
     const errorEl = formGroup.querySelector('.error-message');
-    if (errorEl) {
-        errorEl.textContent = '';
-    }
+    errorEl.textContent = '';
 }
 
-// Handle payment form submission
-function handlePaymentSubmit(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const inputs = form.querySelectorAll('input');
-    let isFormValid = true;
-
-    // Validate all fields
-    inputs.forEach(input => {
-        if (!validateField(input)) {
-            isFormValid = false;
-        }
-    });
-
-    if (!isFormValid) {
-        showNotification('Please fix the errors in the form', 'error');
-        return;
-    }
-
-    // Process successful payment
-    processPayment();
-}
-
-// Process payment
-function processPayment() {
-    // Show loading state
-    const submitBtn = document.querySelector('.place-order-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Processing...';
-    submitBtn.disabled = true;
-
-    // Simulate processing delay
-    setTimeout(() => {
-        // Generate order ID
-        const orderId = 'SNK' + Date.now().toString().slice(-8);
-
-        // Clear cart
-        clearCart();
-
-        // Show success modal
-        showOrderSuccess(orderId);
-
-        // Reset button
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 1500);
-}
-
-// Show order success modal
-function showOrderSuccess(orderId) {
-    const modal = document.createElement('div');
-    modal.className = 'success-modal';
-    modal.innerHTML = `
-        <div class="success-modal-content">
-            <div class="success-icon">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-            </div>
-            <h2>Order Placed Successfully!</h2>
-            <p class="order-id">Order ID: <strong>${orderId}</strong></p>
-            <p class="success-message">Thank you for your purchase! You will receive an email confirmation shortly.</p>
-            <div class="success-actions">
-                <a href="index.html" class="btn btn-secondary">Back to Home</a>
-                <a href="products.html" class="btn btn-primary">Continue Shopping</a>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden';
-
-    // Trigger animation
-    setTimeout(() => modal.classList.add('show'), 10);
-}
-
-// Format card number input
+// Format card number with spaces
 function formatCardNumber(input) {
-    let value = input.value.replace(/\s/g, '').replace(/\D/g, '');
-    let formatted = '';
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 16);
 
-    for (let i = 0; i < value.length && i < 16; i++) {
+    // Add spaces every 4 digits
+    let formatted = '';
+    for (let i = 0; i < value.length; i++) {
         if (i > 0 && i % 4 === 0) {
             formatted += ' ';
         }
@@ -354,7 +304,7 @@ function formatCardNumber(input) {
     input.value = formatted;
 }
 
-// Format expiry date input
+// Format expiry date
 function formatExpiryDate(input) {
     let value = input.value.replace(/\D/g, '');
 
@@ -365,5 +315,63 @@ function formatExpiryDate(input) {
     input.value = value;
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', initPaymentPage);
+// Process payment
+function processPayment() {
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+        <div class="spinner"></div>
+        <span>Processing...</span>
+    `;
+
+    // Simulate payment processing
+    setTimeout(() => {
+        // Generate order ID
+        const orderId = generateOrderId();
+
+        // Clear cart
+        clearCart();
+
+        // Show success modal
+        showOrderSuccess(orderId);
+
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            <span>Pay Now</span>
+        `;
+    }, 2000);
+}
+
+// Generate order ID
+function generateOrderId() {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `SH-${timestamp}-${random}`;
+}
+
+// Show order success modal
+function showOrderSuccess(orderId) {
+    const modal = document.getElementById('success-modal');
+    const orderIdEl = document.getElementById('order-id');
+
+    orderIdEl.textContent = orderId;
+    modal.classList.add('active');
+
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+}
+
+// Close modal on click outside
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('success-modal');
+    if (e.target === modal) {
+        // Don't close - user must use buttons
+    }
+});

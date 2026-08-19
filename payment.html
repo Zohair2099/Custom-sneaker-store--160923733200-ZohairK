@@ -22,15 +22,8 @@
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="products.html" class="nav-link">Products</a>
                 <a href="cart.html" class="nav-link cart-link">
-                    <span class="cart-icon-wrapper">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="9" cy="21" r="1"/>
-                            <circle cx="20" cy="21" r="1"/>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
-                        </svg>
-                        <span id="cart-badge" class="cart-badge">0</span>
-                    </span>
-                    <span>Cart</span>
+                    Cart
+                    <span class="cart-badge" id="cart-badge">0</span>
                 </a>
                 <a href="payment.html" class="nav-link active">Payment</a>
                 <a href="github.html" class="nav-link">GitHub</a>
@@ -46,14 +39,8 @@
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
-            <h1 class="page-title">Checkout</h1>
-            <div class="page-breadcrumb">
-                <a href="index.html">Home</a>
-                <span>/</span>
-                <a href="cart.html">Cart</a>
-                <span>/</span>
-                <span>Payment</span>
-            </div>
+            <h1>Checkout</h1>
+            <p>Complete your order securely</p>
         </div>
     </section>
 
@@ -61,147 +48,195 @@
     <section class="payment-section">
         <div class="container">
             <!-- Empty Cart Message -->
-            <div class="empty-cart" id="empty-cart-payment" style="display: none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <div class="empty-cart-message" id="empty-cart-message" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="9" cy="21" r="1"/>
                     <circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
                 <h2>Your cart is empty</h2>
-                <p>Add some items to your cart before checking out.</p>
+                <p>Add some sneakers to your cart before checkout</p>
                 <a href="products.html" class="btn btn-primary">Browse Products</a>
             </div>
 
             <!-- Payment Content -->
-            <div class="payment-grid" id="payment-form-container">
-                <!-- Payment Form -->
-                <div class="payment-form-container">
-                    <form id="payment-form" novalidate>
-                        <!-- Customer Details -->
-                        <div class="form-section">
-                            <h3>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                                    <circle cx="12" cy="7" r="4"/>
-                                </svg>
-                                Customer Details
-                            </h3>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="fullName">Full Name <span class="required">*</span></label>
-                                    <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email <span class="required">*</span></label>
-                                    <input type="email" id="email" name="email" placeholder="john@example.com" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number <span class="required">*</span></label>
-                                    <input type="tel" id="phone" name="phone" placeholder="1234567890" required>
-                                </div>
-                                <div class="form-group full-width">
-                                    <label for="address">Address <span class="required">*</span></label>
-                                    <input type="text" id="address" name="address" placeholder="123 Main Street" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="city">City <span class="required">*</span></label>
-                                    <input type="text" id="city" name="city" placeholder="New York" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="postalCode">Postal Code <span class="required">*</span></label>
-                                    <input type="text" id="postalCode" name="postalCode" placeholder="10001" required>
-                                </div>
+            <div class="payment-content" id="payment-content">
+                <div class="payment-grid">
+                    <!-- Order Summary -->
+                    <div class="order-summary-card">
+                        <div class="summary-header">
+                            <h2>Order Summary</h2>
+                            <span class="item-count" id="item-count">0 items</span>
+                        </div>
+                        <div class="summary-items" id="summary-items">
+                            <!-- Items rendered by JavaScript -->
+                        </div>
+                        <div class="summary-totals">
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span id="summary-subtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping</span>
+                                <span id="summary-shipping">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (8%)</span>
+                                <span id="summary-tax">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span id="summary-total">$0.00</span>
                             </div>
                         </div>
-
-                        <!-- Payment Details -->
-                        <div class="form-section">
-                            <h3>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                                    <line x1="1" y1="10" x2="23" y2="10"/>
-                                </svg>
-                                Payment Details
-                            </h3>
-                            <div class="form-grid">
-                                <div class="form-group full-width">
-                                    <label for="cardholderName">Cardholder Name <span class="required">*</span></label>
-                                    <input type="text" id="cardholderName" name="cardholderName" placeholder="JOHN DOE" required>
-                                </div>
-                                <div class="form-group full-width">
-                                    <label for="cardNumber">Card Number <span class="required">*</span></label>
-                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required oninput="formatCardNumber(this)">
-                                </div>
-                                <div class="form-group">
-                                    <label for="expiryDate">Expiry Date <span class="required">*</span></label>
-                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5" required oninput="formatExpiryDate(this)">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cvv">CVV <span class="required">*</span></label>
-                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary place-order-btn">Place Order</button>
-                    </form>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="order-summary-card">
-                    <h3>Order Summary</h3>
-                    <div class="summary-items" id="order-summary">
-                        <!-- Summary items will be rendered here -->
                     </div>
-                    <div class="payment-totals">
-                        <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span id="payment-subtotal">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Shipping</span>
-                            <span id="payment-shipping">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Tax (8%)</span>
-                            <span id="payment-tax">$0.00</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total</span>
-                            <span id="payment-total">$0.00</span>
-                        </div>
+
+                    <!-- Payment Form -->
+                    <div class="payment-form-container">
+                        <form id="payment-form" novalidate>
+                            <!-- Customer Details -->
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <span class="section-number">1</span>
+                                    Customer Details
+                                </h3>
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="full-name">Full Name *</label>
+                                        <input type="text" id="full-name" name="fullName" placeholder="John Doe" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email Address *</label>
+                                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number *</label>
+                                        <input type="tel" id="phone" name="phone" placeholder="1234567890" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="address">Street Address *</label>
+                                        <input type="text" id="address" name="address" placeholder="123 Main Street" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="city">City *</label>
+                                        <input type="text" id="city" name="city" placeholder="New York" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="postal">Postal Code *</label>
+                                        <input type="text" id="postal" name="postal" placeholder="10001" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Details -->
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <span class="section-number">2</span>
+                                    Payment Details
+                                </h3>
+                                <div class="card-icons">
+                                    <svg viewBox="0 0 50 50" class="card-icon visa">
+                                        <rect width="50" height="35" rx="4" fill="#1A1F71"/>
+                                        <text x="25" y="22" text-anchor="middle" fill="white" font-size="10" font-weight="bold">VISA</text>
+                                    </svg>
+                                    <svg viewBox="0 0 50 35" class="card-icon mastercard">
+                                        <rect width="50" height="35" rx="4" fill="#000"/>
+                                        <circle cx="20" cy="17.5" r="10" fill="#EB001B"/>
+                                        <circle cx="30" cy="17.5" r="10" fill="#F79E1B"/>
+                                    </svg>
+                                    <svg viewBox="0 0 50 35" class="card-icon amex">
+                                        <rect width="50" height="35" rx="4" fill="#006FCF"/>
+                                        <text x="25" y="22" text-anchor="middle" fill="white" font-size="8" font-weight="bold">AMEX</text>
+                                    </svg>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="cardholder">Cardholder Name *</label>
+                                        <input type="text" id="cardholder" name="cardholder" placeholder="JOHN DOE" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="card-number">Card Number *</label>
+                                        <input type="text" id="card-number" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiry">Expiry Date *</label>
+                                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cvv">CVV *</label>
+                                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                                        <span class="error-message"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-lg btn-full" id="submit-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                        <line x1="1" y1="10" x2="23" y2="10"/>
+                                    </svg>
+                                    <span>Pay Now</span>
+                                </button>
+                            </div>
+
+                            <p class="secure-note">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                Your payment information is secure and encrypted
+                            </p>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Order Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-content success-modal">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9 12l2 2 4-4"/>
+                </svg>
+            </div>
+            <h2>Order Confirmed!</h2>
+            <p class="order-id">Order ID: <span id="order-id"></span></p>
+            <p class="success-message">Thank you for your purchase! A confirmation email has been sent to your email address.</p>
+            <div class="success-details">
+                <p>You will receive your sneakers within 3-5 business days.</p>
+            </div>
+            <div class="modal-actions">
+                <a href="products.html" class="btn btn-outline">Continue Shopping</a>
+                <a href="index.html" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About SneakerHub</h4>
-                    <p class="footer-text">SneakerHub is your ultimate destination for premium sneakers. We bring you the latest styles from top brands at unbeatable prices.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Twitter">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Instagram">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                            </svg>
-                        </a>
-                    </div>
+                <div class="footer-section footer-brand">
+                    <a href="index.html" class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21 4c-1.5 0-2.5 1-3 2l-1 3-9 1s-3-1-3 2c0 2 2 3 4 3l-2 6h2l2-6h8l2 6h2l-2-6c2 0 3-1 3-3V7c0-1.5-.5-3-3-3zM7 10h9l1-3c.3-.8.8-1 1-1h3c.5 0 1 .5 1 1v5c0 1-.5 2-2 2H7c-1 0-2-.5-2-1s1-3 2-3z"/>
+                        </svg>
+                        <span>SneakerHub</span>
+                    </a>
+                    <p class="footer-description">Your ultimate destination for premium sneakers.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -209,27 +244,25 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="products.html">Products</a></li>
                         <li><a href="cart.html">Cart</a></li>
-                        <li><a href="payment.html">Payment</a></li>
-                        <li><a href="github.html">GitHub</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Categories</h4>
+                    <h4>Support</h4>
                     <ul class="footer-links">
-                        <li><a href="products.html?category=running">Running</a></li>
-                        <li><a href="products.html?category=casual">Casual</a></li>
-                        <li><a href="products.html?category=sports">Sports</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Contact Us</h4>
-                    <p class="footer-text">Email: support@sneakerhub.com</p>
-                    <p class="footer-text">Phone: +1 (555) 123-4567</p>
-                    <p class="footer-text">Address: 123 Sneaker Street, NY 10001</p>
+                    <h4>Contact</h4>
+                    <p class="footer-text">support@sneakerhub.com</p>
+                    <p class="footer-text">+1 (555) 123-4567</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 SneakerHub. All rights reserved. | <a href="github.html" style="color: var(--primary-color);">View on GitHub</a></p>
+                <p>&copy; 2026 SneakerHub. All rights reserved.</p>
+                <a href="github.html" class="github-link">View on GitHub</a>
             </div>
         </div>
     </footer>
