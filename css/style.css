@@ -3310,6 +3310,79 @@ input, select, textarea {
     line-height: 1.5;
 }
 
+/* Shipping Details Section (COD) */
+.shipping-details-section {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.shipping-details-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.shipping-details {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.shipping-detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.shipping-detail-row:last-of-type {
+    border-bottom: none;
+}
+
+.shipping-detail-row.total {
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 2px solid var(--primary-color);
+    border-bottom: none;
+}
+
+.shipping-detail-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+}
+
+.shipping-detail-value {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.shipping-detail-row.total .shipping-detail-label {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.shipping-detail-row.total .shipping-detail-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.shipping-note {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(255, 107, 53, 0.1);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
 /* Form Actions */
 .form-actions {
     margin-top: 30px;

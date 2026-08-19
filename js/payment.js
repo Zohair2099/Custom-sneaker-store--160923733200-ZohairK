@@ -354,13 +354,19 @@ function formatExpiryDate(input) {
 // Process payment
 function processPayment(method) {
     const submitBtn = document.getElementById('submit-btn');
-    const btnLabel = method === 'cod' ? 'Placing Order...' : 'Processing...';
+    const submitBtnText = document.getElementById('submit-btn-text');
 
-    // Show loading state
+    // For COD, use two-step flow: first show shipping details, then confirm
+    if (method === 'cod') {
+        handleCODFlow(submitBtn, submitBtnText);
+        return;
+    }
+
+    // Standard card payment flow
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
         <div class="spinner"></div>
-        <span>${btnLabel}</span>
+        <span>Processing...</span>
     `;
 
     // Simulate payment processing
@@ -381,9 +387,133 @@ function processPayment(method) {
                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                 <line x1="1" y1="10" x2="23" y2="10"/>
             </svg>
-            <span>Pay Now</span>
+            <span id="submit-btn-text">Pay Now</span>
         `;
     }, 2000);
+}
+
+// Handle COD two-step flow: show shipping details, then confirm
+let codStep = 1;
+let codOrderId = null;
+
+function handleCODFlow(submitBtn, submitBtnText) {
+    const shippingSection = document.getElementById('shipping-details-section');
+    const shippingDetails = document.getElementById('shipping-details');
+
+    if (codStep === 1) {
+        // Step 1: Generate shipping details and show them
+        codOrderId = generateOrderId();
+        codStep = 2;
+
+        // Generate shipping details HTML
+        const details = generateShippingDetails(codOrderId);
+        shippingDetails.innerHTML = details;
+
+        // Show shipping section with animation
+        shippingSection.style.display = 'block';
+        setTimeout(() => {
+            shippingSection.classList.add('visible');
+        }, 10);
+
+        // Update button text
+        submitBtnText.textContent = 'Proceed to Delivery';
+        submitBtn.disabled = false;
+    } else if (codStep === 2) {
+        // Step 2: Confirm and place order
+        codStep = 1;
+        shippingSection.classList.remove('visible');
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <div class="spinner"></div>
+            <span>Placing Order...</span>
+        `;
+
+        setTimeout(() => {
+            // Clear cart
+            clearCart();
+
+            // Show success modal
+            showOrderSuccess(codOrderId, 'cod');
+
+            // Hide shipping section
+            setTimeout(() => {
+                shippingSection.style.display = 'none';
+            }, 300);
+
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                <span id="submit-btn-text">Pay Now</span>
+            `;
+        }, 1500);
+    }
+}
+
+// Generate shipping details for COD
+function generateShippingDetails(orderId) {
+    const now = new Date();
+    const deliveryDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
+    const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    const shippingCost = getShippingCost();
+    const subtotal = getCartSubtotal();
+    const total = getGrandTotal();
+
+    // Get customer details from form
+    const fullName = document.getElementById('full-name').value;
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const postal = document.getElementById('postal').value;
+    const phone = document.getElementById('phone').value;
+    const email = document.getElementById('email').value;
+
+    const items = cart.map(item => {
+        const product = getProductById(item.productId);
+        return product ? `${product.name} (Size: ${item.size}) x${item.quantity}` : '';
+    }).filter(Boolean).join(', ');
+
+    return `
+        <div class="shipping-detail-row">
+            <div class="shipping-detail-label">Order ID</div>
+            <div class="shipping-detail-value">${orderId}</div>
+        </div>
+        <div class="shipping-detail-row">
+            <div class="shipping-detail-label">Estimated Delivery</div>
+            <div class="shipping-detail-value">${deliveryDateStr} (3 business days)</div>
+        </div>
+        <div class="shipping-detail-row">
+            <div class="shipping-detail-label">Shipping Address</div>
+            <div class="shipping-detail-value">
+                ${fullName}<br>
+                ${address}<br>
+                ${city} ${postal}<br>
+                Phone: ${phone}
+            </div>
+        </div>
+        <div class="shipping-detail-row">
+            <div class="shipping-detail-label">Contact Email</div>
+            <div class="shipping-detail-value">${email}</div>
+        </div>
+        <div class="shipping-detail-row">
+            <div class="shipping-detail-label">Items</div>
+            <div class="shipping-detail-value">${items}</div>
+        </div>
+        <div class="shipping-detail-row total">
+            <div class="shipping-detail-label">Amount to Pay on Delivery</div>
+            <div class="shipping-detail-value">$${total.toFixed(2)}</div>
+        </div>
+        <p class="shipping-note">Please have exact cash amount ready for delivery.</p>
+    `;
 }
 
 // Generate order ID
