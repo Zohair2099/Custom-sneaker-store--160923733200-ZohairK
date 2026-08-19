@@ -70,10 +70,40 @@ function renderOrderSummary() {
 function setupFormValidation() {
     const form = document.getElementById('payment-form');
     const inputs = form.querySelectorAll('input');
+    const methodRadios = form.querySelectorAll('input[name="paymentMethod"]');
+    const cardSection = document.getElementById('payment-details-section');
+    const codSection = document.getElementById('cod-info-section');
+
+    // Toggle payment details based on selected method
+    function togglePaymentMethod() {
+        const method = form.querySelector('input[name="paymentMethod"]:checked').value;
+        if (method === 'cod') {
+            cardSection.style.display = 'none';
+            codSection.style.display = 'block';
+            // Clear any card errors
+            ['cardholder', 'card-number', 'expiry', 'cvv'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) clearError(el);
+            });
+        } else {
+            cardSection.style.display = 'block';
+            codSection.style.display = 'none';
+        }
+    }
+
+    methodRadios.forEach(radio => {
+        radio.addEventListener('change', togglePaymentMethod);
+    });
 
     // Add input event listeners for real-time validation
     inputs.forEach(input => {
         input.addEventListener('input', function() {
+            // Skip card formatting when COD is selected
+            const method = form.querySelector('input[name="paymentMethod"]:checked').value;
+            if (method === 'cod' && ['cardholder', 'card-number', 'expiry', 'cvv'].includes(input.id)) {
+                return;
+            }
+
             // Format specific fields
             if (input.id === 'card-number') {
                 formatCardNumber(input);
@@ -106,9 +136,15 @@ function setupFormValidation() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Validate all fields
+        const method = form.querySelector('input[name="paymentMethod"]:checked').value;
+
+        // Validate all fields except card fields when COD is selected
         let isValid = true;
         inputs.forEach(input => {
+            if (method === 'cod' && ['cardholder', 'card-number', 'expiry', 'cvv'].includes(input.id)) {
+                clearError(input);
+                return;
+            }
             if (!validateField(input)) {
                 isValid = false;
             }
@@ -125,7 +161,7 @@ function setupFormValidation() {
         }
 
         // Process payment
-        processPayment();
+        processPayment(method);
     });
 }
 
@@ -316,14 +352,15 @@ function formatExpiryDate(input) {
 }
 
 // Process payment
-function processPayment() {
+function processPayment(method) {
     const submitBtn = document.getElementById('submit-btn');
+    const btnLabel = method === 'cod' ? 'Placing Order...' : 'Processing...';
 
     // Show loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
         <div class="spinner"></div>
-        <span>Processing...</span>
+        <span>${btnLabel}</span>
     `;
 
     // Simulate payment processing
@@ -335,7 +372,7 @@ function processPayment() {
         clearCart();
 
         // Show success modal
-        showOrderSuccess(orderId);
+        showOrderSuccess(orderId, method);
 
         // Reset button
         submitBtn.disabled = false;
@@ -357,11 +394,24 @@ function generateOrderId() {
 }
 
 // Show order success modal
-function showOrderSuccess(orderId) {
+function showOrderSuccess(orderId, method) {
     const modal = document.getElementById('success-modal');
     const orderIdEl = document.getElementById('order-id');
+    const modalContent = modal.querySelector('.modal-content');
 
     orderIdEl.textContent = orderId;
+
+    // Update success message based on payment method
+    if (method === 'cod') {
+        modalContent.querySelector('h2').textContent = 'Order Placed!';
+        modalContent.querySelector('.success-message').textContent = 'Your order has been confirmed. You will pay on delivery.';
+        modalContent.querySelector('.success-details').textContent = 'Your order will be delivered within 3-5 business days. Please have cash ready.';
+    } else {
+        modalContent.querySelector('h2').textContent = 'Payment Successful!';
+        modalContent.querySelector('.success-message').textContent = 'Your order has been confirmed and payment processed.';
+        modalContent.querySelector('.success-details').textContent = 'You will receive your sneakers within 3-5 business days.';
+    }
+
     modal.classList.add('active');
 
     // Prevent body scroll

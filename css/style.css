@@ -3220,6 +3220,96 @@ input, select, textarea {
     opacity: 1;
 }
 
+/* Payment Method Selector */
+.payment-method-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.payment-method-option {
+    position: relative;
+    cursor: pointer;
+    display: block;
+}
+
+.payment-method-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.payment-method-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    transition: var(--transition);
+    background: var(--bg-primary);
+}
+
+.payment-method-option input[type="radio"]:checked + .payment-method-card {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 53, 0.05);
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+}
+
+.payment-method-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+}
+
+.payment-method-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.payment-method-info strong {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.payment-method-info span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* COD Info */
+.cod-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    background: rgba(40, 167, 69, 0.08);
+    border-radius: 12px;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.cod-info svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--success-color);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.cod-info-text strong {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.cod-info-text p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
 /* Form Actions */
 .form-actions {
     margin-top: 30px;
