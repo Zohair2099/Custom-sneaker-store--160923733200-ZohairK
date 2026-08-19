@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250">
+  <defs>
+    <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12"/>
+      <stop offset="100%" style="stop-color:#d68910"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="250" fill="#f8f9fa"/>
+  <ellipse cx="150" cy="220" rx="120" ry="15" fill="rgba(0,0,0,0.1)"/>
+  <path d="M30 180 Q80 200 150 200 Q220 200 270 180 L260 160 Q200 170 150 170 Q100 170 40 160 Z" fill="#1a1a2e"/>
+  <path d="M40 160 Q100 170 150 170 Q200 170 260 160 L255 145 Q195 155 150 155 Q105 155 45 145 Z" fill="#ffffff"/>
+  <path d="M45 145 Q105 155 150 155 Q195 155 255 145 L240 60 Q180 40 150 40 Q120 40 60 60 Z" fill="url(#grad6)"/>
+  <path d="M70 110 Q120 90 200 100 L225 85 Q140 70 80 95 Z" fill="#ffffff" opacity="0.9"/>
+  <text x="150" y="235" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">Urban Legend</text>
+</svg>

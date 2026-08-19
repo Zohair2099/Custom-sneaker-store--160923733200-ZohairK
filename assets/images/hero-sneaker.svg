@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="shoeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35"/>
+      <stop offset="100%" style="stop-color:#e55a2b"/>
+    </linearGradient>
+    <linearGradient id="soleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="200" cy="270" rx="150" ry="20" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- Sole -->
+  <path d="M50 220 Q100 240 200 240 Q300 240 350 220 L340 200 Q280 210 200 210 Q120 210 60 200 Z" fill="url(#soleGrad)"/>
+
+  <!-- Midsole -->
+  <path d="M60 200 Q120 210 200 210 Q280 210 340 200 L335 185 Q275 195 200 195 Q125 195 65 185 Z" fill="#ffffff"/>
+
+  <!-- Upper -->
+  <path d="M65 185 Q125 195 200 195 Q275 195 335 185 L320 80 Q250 60 200 60 Q150 60 80 80 Z" fill="url(#shoeGrad)"/>
+
+  <!-- Swoosh / Design Element -->
+  <path d="M90 150 Q150 130 250 140 L280 120 Q180 100 100 130 Z" fill="#ffffff" opacity="0.9"/>
+
+  <!-- Laces -->
+  <ellipse cx="140" cy="110" rx="8" ry="4" fill="#1a1a2e"/>
+  <ellipse cx="165" cy="105" rx="8" ry="4" fill="#1a1a2e"/>
+  <ellipse cx="190" cy="102" rx="8" ry="4" fill="#1a1a2e"/>
+  <ellipse cx="215" cy="105" rx="8" ry="4" fill="#1a1a2e"/>
+
+  <!-- Toe Cap -->
+  <path d="M65 185 Q60 150 80 120 L100 125 Q85 155 90 180 Z" fill="#1a1a2e" opacity="0.3"/>
+
+  <!-- Heel Counter -->
+  <path d="M335 185 Q340 150 320 100 L300 110 Q315 150 310 175 Z" fill="#1a1a2e" opacity="0.3"/>
+
+  <!-- Tongue -->
+  <path d="M200 60 Q210 30 220 25 Q230 30 225 60" fill="url(#shoeGrad)" stroke="#1a1a2e" stroke-width="2"/>
+
+  <!-- Air Unit Detail -->
+  <rect x="120" y="195" width="40" height="8" rx="4" fill="rgba(255,255,255,0.5)"/>
+  <rect x="240" y="195" width="40" height="8" rx="4" fill="rgba(255,255,255,0.5)"/>
+</svg>

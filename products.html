@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse our collection of premium sneakers. Filter by category, search, and sort by price.">
+    <title>Products | SneakerHub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 4c-1.5 0-2.5 1-3 2l-1 3-9 1s-3-1-3 2c0 2 2 3 4 3l-2 6h2l2-6h8l2 6h2l-2-6c2 0 3-1 3-3V7c0-1.5-.5-3-3-3zM7 10h9l1-3c.3-.8.8-1 1-1h3c.5 0 1 .5 1 1v5c0 1-.5 2-2 2H7c-1 0-2-.5-2-1s1-3 2-3z"/>
+                </svg>
+                <span>SneakerHub</span>
+            </a>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="products.html" class="nav-link active">Products</a>
+                <a href="cart.html" class="nav-link cart-link">
+                    <span class="cart-icon-wrapper">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"/>
+                            <circle cx="20" cy="21" r="1"/>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+                        </svg>
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </span>
+                    <span>Cart</span>
+                </a>
+                <a href="payment.html" class="nav-link">Payment</a>
+                <a href="github.html" class="nav-link">GitHub</a>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Our Products</h1>
+            <div class="page-breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span>Products</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section">
+        <div class="container">
+            <!-- Toolbar -->
+            <div class="products-toolbar">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search sneakers..." autocomplete="off">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </div>
+                <div class="filter-group">
+                    <select id="category-filter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="running">Running</option>
+                        <option value="casual">Casual</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                    <select id="sort-filter" class="filter-select">
+                        <option value="default">Sort By: Default</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Count -->
+            <p class="products-count" id="products-count">Showing 12 products</p>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+
+            <!-- No Products Found -->
+            <div class="no-products" id="no-products" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <h3>No products found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About SneakerHub</h4>
+                    <p class="footer-text">SneakerHub is your ultimate destination for premium sneakers. We bring you the latest styles from top brands at unbeatable prices.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="payment.html">Payment</a></li>
+                        <li><a href="github.html">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="products.html?category=running">Running</a></li>
+                        <li><a href="products.html?category=casual">Casual</a></li>
+                        <li><a href="products.html?category=sports">Sports</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p class="footer-text">Email: support@sneakerhub.com</p>
+                    <p class="footer-text">Phone: +1 (555) 123-4567</p>
+                    <p class="footer-text">Address: 123 Sneaker Street, NY 10001</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SneakerHub. All rights reserved. | <a href="github.html" style="color: var(--primary-color);">View on GitHub</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Products page specific code
+        let currentProducts = [...products];
+
+        // Initialize products page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check URL params for category filter
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryParam = urlParams.get('category');
+
+            if (categoryParam) {
+                document.getElementById('category-filter').value = categoryParam;
+            }
+
+            renderProducts();
+            setupFilters();
+        });
+
+        // Render products to grid
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const noProducts = document.getElementById('no-products');
+            const countEl = document.getElementById('products-count');
+
+            if (currentProducts.length === 0) {
+                grid.style.display = 'none';
+                noProducts.style.display = 'block';
+                countEl.textContent = 'No products found';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noProducts.style.display = 'none';
+            countEl.textContent = `Showing ${currentProducts.length} product${currentProducts.length !== 1 ? 's' : ''}`;
+
+            grid.innerHTML = currentProducts.map(product => createProductCard(product)).join('');
+        }
+
+        // Create product card HTML
+        function createProductCard(product) {
+            return `
+                <div class="product-card" data-id="${product.id}">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <p class="product-brand">${product.brand}</p>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-rating">
+                            ${generateStarRating(product.rating)}
+                            <span class="rating-count">(${product.rating})</span>
+                        </div>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <div class="product-sizes">
+                            ${product.sizes.map((size, index) =>
+                                `<span class="size-option ${index === 0 ? 'selected' : ''}" data-size="${size}">${size}</span>`
+                            ).join('')}
+                        </div>
+                        <button class="add-to-cart-btn" onclick="handleAddToCart(${product.id}, this)">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Setup filters
+        function setupFilters() {
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            const sortFilter = document.getElementById('sort-filter');
+
+            // Search with debounce
+            searchInput.addEventListener('input', debounce(filterProducts, 300));
+
+            // Category filter
+            categoryFilter.addEventListener('change', filterProducts);
+
+            // Sort filter
+            sortFilter.addEventListener('change', filterProducts);
+        }
+
+        // Filter and sort products
+        function filterProducts() {
+            const searchTerm = document.getElementById('search-input').value.trim();
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+
+            // Start with all products
+            let filtered = [...products];
+
+            // Apply search
+            if (searchTerm) {
+                filtered = searchProducts(searchTerm);
+            }
+
+            // Apply category filter
+            if (category !== 'all') {
+                filtered = filtered.filter(p => p.category === category);
+            }
+
+            // Apply sort
+            if (sort !== 'default') {
+                filtered = sortProducts(filtered, sort);
+            }
+
+            currentProducts = filtered;
+            renderProducts();
+        }
+
+        // Handle add to cart
+        function handleAddToCart(productId, button) {
+            const card = button.closest('.product-card');
+            const selectedSize = card.querySelector('.size-option.selected');
+            const size = selectedSize ? parseInt(selectedSize.dataset.size) : null;
+
+            if (addToCart(productId, 1, size)) {
+                showNotification('Item added to cart!', 'success');
+            }
+        }
+
+        // Size selection
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('size-option')) {
+                const card = e.target.closest('.product-card');
+                card.querySelectorAll('.size-option').forEach(s => s.classList.remove('selected'));
+                e.target.classList.add('selected');
+            }
+        });
+    </script>
+</body>
+</html>
