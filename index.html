@@ -22,15 +22,8 @@
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="products.html" class="nav-link">Products</a>
                 <a href="cart.html" class="nav-link cart-link">
-                    <span class="cart-icon-wrapper">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="9" cy="21" r="1"/>
-                            <circle cx="20" cy="21" r="1"/>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
-                        </svg>
-                        <span id="cart-badge" class="cart-badge">0</span>
-                    </span>
-                    <span>Cart</span>
+                    Cart
+                    <span class="cart-badge" id="cart-badge">0</span>
                 </a>
                 <a href="payment.html" class="nav-link">Payment</a>
                 <a href="github.html" class="nav-link">GitHub</a>
@@ -45,151 +38,169 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-background">
+            <div class="hero-shape shape-1"></div>
+            <div class="hero-shape shape-2"></div>
+            <div class="hero-shape shape-3"></div>
+        </div>
         <div class="hero-container">
             <div class="hero-content">
                 <span class="hero-badge">New Collection 2026</span>
-                <h1 class="hero-title">Step Into Style With <span>Premium Sneakers</span></h1>
-                <p class="hero-text">Discover the latest trends in sneaker fashion. From classic designs to cutting-edge styles, find your perfect pair at unbeatable prices.</p>
+                <h1 class="hero-title">
+                    Step Into
+                    <span class="hero-title-accent">Greatness</span>
+                </h1>
+                <p class="hero-description">
+                    Discover the latest premium sneakers from top brands. Elevate your style with our exclusive collection designed for comfort, performance, and unmatched style.
+                </p>
                 <div class="hero-buttons">
-                    <a href="products.html" class="btn btn-primary btn-lg">Shop Now</a>
-                    <a href="#featured" class="btn btn-outline btn-lg">View Collection</a>
+                    <a href="products.html" class="btn btn-primary btn-lg">
+                        <span>Shop Now</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#featured" class="btn btn-outline btn-lg">
+                        <span>View Collection</span>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">500+</span>
+                        <span class="hero-stat-label">Products</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">50K+</span>
+                        <span class="hero-stat-label">Happy Customers</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">100%</span>
+                        <span class="hero-stat-label">Authentic</span>
+                    </div>
                 </div>
             </div>
             <div class="hero-image">
-                <img src="assets/images/hero-sneaker.svg" alt="Featured Sneaker">
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Products Section -->
-    <section id="featured" class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Featured Sneakers</h2>
-                <p class="section-subtitle">Check out our most popular picks handpicked just for you</p>
-            </div>
-            <div class="products-grid" id="featured-products">
-                <!-- Products will be loaded dynamically -->
-            </div>
-            <div class="text-center mt-3">
-                <a href="products.html" class="btn btn-primary">View All Products</a>
+                <div class="hero-image-wrapper">
+                    <img src="assets/images/hero-sneaker.svg" alt="Premium Sneaker" class="hero-sneaker">
+                    <div class="hero-image-glow"></div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="section features">
+    <section class="features" id="features">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Why Choose Us</h2>
-                <p class="section-subtitle">We provide the best shopping experience for sneaker enthusiasts</p>
+                <span class="section-badge">Why Choose Us</span>
+                <h2 class="section-title">The SneakerHub Experience</h2>
+                <p class="section-description">We're committed to providing you with the best sneaker shopping experience</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/>
-                            <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/>
-                            <path d="M18 12a2 2 0 000 4h4v-4h-4z"/>
+                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
                     </div>
-                    <h3 class="feature-title">Best Prices</h3>
-                    <p class="feature-text">We offer competitive prices on all our sneakers, ensuring you get the best value for your money.</p>
+                    <h3 class="feature-title">Genuine Products</h3>
+                    <p class="feature-description">Every sneaker is 100% authentic and sourced directly from authorized retailers. No fakes, no compromises.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="1" y="3" width="15" height="13"/>
-                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-                            <circle cx="5.5" cy="18.5" r="2.5"/>
-                            <circle cx="18.5" cy="18.5" r="2.5"/>
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
                     <h3 class="feature-title">Fast Delivery</h3>
-                    <p class="feature-text">Get your sneakers delivered to your doorstep quickly with our express shipping options.</p>
+                    <p class="feature-description">Free shipping on orders over $100. Get your sneakers delivered to your doorstep within 2-5 business days.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                         </svg>
                     </div>
-                    <h3 class="feature-title">Secure Shopping</h3>
-                    <p class="feature-text">Shop with confidence knowing your personal and payment information is protected.</p>
+                    <h3 class="feature-title">Secure Payment</h3>
+                    <p class="feature-description">Shop with confidence. Our payment system uses industry-standard encryption to protect your information.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
+                            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
                     </div>
-                    <h3 class="feature-title">24/7 Support</h3>
-                    <p class="feature-text">Our dedicated customer support team is available around the clock to assist you.</p>
+                    <h3 class="feature-title">Easy Returns</h3>
+                    <p class="feature-description">Not satisfied? Return within 30 days for a full refund. No questions asked, hassle-free returns.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="section testimonials">
+    <!-- Featured Products Section -->
+    <section class="featured-products" id="featured">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">What Our Customers Say</h2>
-                <p class="section-subtitle">Read reviews from our satisfied customers</p>
+                <span class="section-badge">Top Picks</span>
+                <h2 class="section-title">Featured Sneakers</h2>
+                <p class="section-description">Discover our most popular sneakers loved by thousands of customers</p>
             </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
-                    <p class="testimonial-text">"Amazing quality sneakers at great prices! The delivery was fast and the customer service was excellent. Will definitely shop here again!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JD</div>
-                        <div>
-                            <p class="author-name">John Doe</p>
-                            <p class="author-title">Verified Buyer</p>
-                        </div>
-                    </div>
+            <div class="products-grid" id="featured-products-grid">
+                <!-- Products will be rendered by JavaScript -->
+            </div>
+            <div class="section-cta">
+                <a href="products.html" class="btn btn-primary btn-lg">
+                    View All Products
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section class="brands-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Our Partners</span>
+                <h2 class="section-title">Top Brands We Carry</h2>
+            </div>
+            <div class="brands-grid">
+                <div class="brand-item">
+                    <span class="brand-name">Nike</span>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
-                    <p class="testimonial-text">"Found the perfect pair of running shoes here. The website is easy to navigate and the checkout process was smooth. Highly recommended!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SM</div>
-                        <div>
-                            <p class="author-name">Sarah Miller</p>
-                            <p class="author-title">Verified Buyer</p>
-                        </div>
-                    </div>
+                <div class="brand-item">
+                    <span class="brand-name">Adidas</span>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
-                    <p class="testimonial-text">"Great selection of sneakers! I love how they have all the latest styles. The prices are unbeatable and shipping is free over $100. Love it!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MJ</div>
-                        <div>
-                            <p class="author-name">Mike Johnson</p>
-                            <p class="author-title">Verified Buyer</p>
-                        </div>
-                    </div>
+                <div class="brand-item">
+                    <span class="brand-name">Puma</span>
                 </div>
+                <div class="brand-item">
+                    <span class="brand-name">Jordan</span>
+                </div>
+                <div class="brand-item">
+                    <span class="brand-name">Reebok</span>
+                </div>
+                <div class="brand-item">
+                    <span class="brand-name">New Balance</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h2>Stay in the Loop</h2>
+                    <p>Subscribe to get exclusive offers, new arrivals, and sneaker news delivered to your inbox.</p>
+                </div>
+                <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
             </div>
         </div>
     </section>
@@ -198,22 +209,27 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About SneakerHub</h4>
-                    <p class="footer-text">SneakerHub is your ultimate destination for premium sneakers. We bring you the latest styles from top brands at unbeatable prices.</p>
-                    <div class="social-links">
+                <div class="footer-section footer-brand">
+                    <a href="index.html" class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21 4c-1.5 0-2.5 1-3 2l-1 3-9 1s-3-1-3 2c0 2 2 3 4 3l-2 6h2l2-6h8l2 6h2l-2-6c2 0 3-1 3-3V7c0-1.5-.5-3-3-3zM7 10h9l1-3c.3-.8.8-1 1-1h3c.5 0 1 .5 1 1v5c0 1-.5 2-2 2H7c-1 0-2-.5-2-1s1-3 2-3z"/>
+                        </svg>
+                        <span>SneakerHub</span>
+                    </a>
+                    <p class="footer-description">Your ultimate destination for premium sneakers. Authentic products, fast delivery, and exceptional customer service.</p>
+                    <div class="footer-social">
                         <a href="#" class="social-link" aria-label="Facebook">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
                             </svg>
                         </a>
                         <a href="#" class="social-link" aria-label="Twitter">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
                             </svg>
                         </a>
                         <a href="#" class="social-link" aria-label="Instagram">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
@@ -227,8 +243,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="products.html">Products</a></li>
                         <li><a href="cart.html">Cart</a></li>
-                        <li><a href="payment.html">Payment</a></li>
-                        <li><a href="github.html">GitHub</a></li>
+                        <li><a href="payment.html">Checkout</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -241,13 +256,38 @@
                 </div>
                 <div class="footer-section">
                     <h4>Contact Us</h4>
-                    <p class="footer-text">Email: support@sneakerhub.com</p>
-                    <p class="footer-text">Phone: +1 (555) 123-4567</p>
-                    <p class="footer-text">Address: 123 Sneaker Street, NY 10001</p>
+                    <ul class="footer-contact">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <span>support@sneakerhub.com</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                            </svg>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span>123 Sneaker Street, NY 10001</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 SneakerHub. All rights reserved. | <a href="github.html" style="color: var(--primary-color);">View on GitHub</a></p>
+                <p>&copy; 2026 SneakerHub. All rights reserved.</p>
+                <a href="github.html" class="github-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View on GitHub
+                </a>
             </div>
         </div>
     </footer>
@@ -257,42 +297,40 @@
     <script src="js/cart.js"></script>
     <script src="js/main.js"></script>
     <script>
-        // Load featured products on homepage
+        // Render featured products (first 4)
         document.addEventListener('DOMContentLoaded', function() {
-            const featuredContainer = document.getElementById('featured-products');
-            if (featuredContainer) {
-                const featured = products.slice(0, 4);
-                featuredContainer.innerHTML = featured.map(product => createProductCard(product)).join('');
-            }
-        });
+            const featuredGrid = document.getElementById('featured-products-grid');
+            const featuredProducts = products.slice(0, 4);
 
-        // Create product card HTML
-        function createProductCard(product) {
-            return `
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}">
+            featuredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image-container">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-overlay">
+                            <button class="btn btn-primary" onclick="handleAddToCart(${product.id}, this)">Add to Cart</button>
+                        </div>
                     </div>
                     <div class="product-info">
-                        <p class="product-brand">${product.brand}</p>
+                        <span class="product-category">${product.category}</span>
                         <h3 class="product-name">${product.name}</h3>
+                        <p class="product-brand">${product.brand}</p>
                         <div class="product-rating">
                             ${generateStarRating(product.rating)}
-                            <span class="rating-count">(${product.rating})</span>
+                            <span class="rating-value">${product.rating}</span>
                         </div>
-                        <p class="product-price">$${product.price.toFixed(2)}</p>
-                        <div class="product-sizes">
-                            ${product.sizes.map((size, index) =>
-                                `<span class="size-option ${index === 0 ? 'selected' : ''}" data-size="${size}">${size}</span>`
-                            ).join('')}
+                        <div class="product-footer">
+                            <span class="product-price">$${product.price.toFixed(2)}</span>
+                            <div class="size-selector">
+                                ${product.sizes.map(size => `<button class="size-option" data-size="${size}">${size}</button>`).join('')}
+                            </div>
                         </div>
-                        <button class="add-to-cart-btn" onclick="handleAddToCart(${product.id}, this)">
-                            Add to Cart
-                        </button>
                     </div>
-                </div>
-            `;
-        }
+                `;
+                featuredGrid.appendChild(card);
+            });
+        });
 
         // Handle add to cart from homepage
         function handleAddToCart(productId, button) {
@@ -313,6 +351,14 @@
                 e.target.classList.add('selected');
             }
         });
+
+        // Newsletter form handler
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            showNotification('Thanks for subscribing!', 'success');
+            event.target.reset();
+        }
     </script>
 </body>
 </html>
