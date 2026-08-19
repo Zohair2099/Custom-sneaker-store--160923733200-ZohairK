@@ -138,34 +138,8 @@ function updateShippingDetailsIfVisible() {
 function setupFormValidation() {
     const form = document.getElementById('payment-form');
     const inputs = form.querySelectorAll('input');
-    const methodRadios = form.querySelectorAll('input[name="paymentMethod"]');
-    const cardSection = document.getElementById('payment-details-section');
-    const codSection = document.getElementById('cod-info-section');
 
-    // Toggle payment details based on selected method
-    function togglePaymentMethod() {
-        const method = form.querySelector('input[name="paymentMethod"]:checked').value;
-        if (method === 'cod') {
-            cardSection.style.display = 'none';
-            codSection.style.display = 'block';
-            // Clear any card errors
-            ['cardholder', 'card-number', 'expiry', 'cvv'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) clearError(el);
-            });
-            // Update summary with default delivery method
-            updateDeliverySummary();
-        } else {
-            cardSection.style.display = 'block';
-            codSection.style.display = 'none';
-        }
-    }
-
-    methodRadios.forEach(radio => {
-        radio.addEventListener('change', togglePaymentMethod);
-    });
-
-    // Delivery method selector (COD)
+    // Delivery method selector
     const deliveryRadios = form.querySelectorAll('input[name="deliveryMethod"]');
     deliveryRadios.forEach(radio => {
         radio.addEventListener('change', function() {
@@ -174,23 +148,14 @@ function setupFormValidation() {
         });
     });
 
+    // Initial delivery summary update
+    updateDeliverySummary();
+
     // Add input event listeners for real-time validation
     inputs.forEach(input => {
         input.addEventListener('input', function() {
-            // Skip card formatting when COD is selected
-            const method = form.querySelector('input[name="paymentMethod"]:checked').value;
-            if (method === 'cod' && ['cardholder', 'card-number', 'expiry', 'cvv'].includes(input.id)) {
-                return;
-            }
-
             // Format specific fields
-            if (input.id === 'card-number') {
-                formatCardNumber(input);
-            } else if (input.id === 'expiry') {
-                formatExpiryDate(input);
-            } else if (input.id === 'cvv') {
-                input.value = input.value.replace(/\D/g, '').substring(0, 4);
-            } else if (input.id === 'phone') {
+            if (input.id === 'phone') {
                 input.value = input.value.replace(/\D/g, '').substring(0, 10);
             } else if (input.id === 'postal') {
                 input.value = input.value.replace(/[^0-9a-zA-Z]/g, '').substring(0, 6);
@@ -215,15 +180,9 @@ function setupFormValidation() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const method = form.querySelector('input[name="paymentMethod"]:checked').value;
-
-        // Validate all fields except card fields when COD is selected
+        // Validate all fields
         let isValid = true;
         inputs.forEach(input => {
-            if (method === 'cod' && ['cardholder', 'card-number', 'expiry', 'cvv'].includes(input.id)) {
-                clearError(input);
-                return;
-            }
             if (!validateField(input)) {
                 isValid = false;
             }
@@ -240,7 +199,7 @@ function setupFormValidation() {
         }
 
         // Process payment
-        processPayment(method);
+        processPayment();
     });
 }
 
@@ -360,28 +319,6 @@ function validateField(input) {
     }
 }
 
-// Luhn algorithm for card validation
-function luhnCheck(cardNumber) {
-    let sum = 0;
-    let isEven = false;
-
-    for (let i = cardNumber.length - 1; i >= 0; i--) {
-        let digit = parseInt(cardNumber[i], 10);
-
-        if (isEven) {
-            digit *= 2;
-            if (digit > 9) {
-                digit -= 9;
-            }
-        }
-
-        sum += digit;
-        isEven = !isEven;
-    }
-
-    return sum % 10 === 0;
-}
-
 // Show error message
 function showError(input, message) {
     const formGroup = input.closest('.form-group');
@@ -402,73 +339,13 @@ function clearError(input) {
     errorEl.textContent = '';
 }
 
-// Format card number with spaces
-function formatCardNumber(input) {
-    let value = input.value.replace(/\D/g, '');
-    value = value.substring(0, 16);
-
-    // Add spaces every 4 digits
-    let formatted = '';
-    for (let i = 0; i < value.length; i++) {
-        if (i > 0 && i % 4 === 0) {
-            formatted += ' ';
-        }
-        formatted += value[i];
-    }
-
-    input.value = formatted;
-}
-
-// Format expiry date
-function formatExpiryDate(input) {
-    let value = input.value.replace(/\D/g, '');
-
-    if (value.length >= 2) {
-        value = value.substring(0, 2) + '/' + value.substring(2, 4);
-    }
-
-    input.value = value;
-}
-
 // Process payment
-function processPayment(method) {
+function processPayment() {
     const submitBtn = document.getElementById('submit-btn');
     const submitBtnText = document.getElementById('submit-btn-text');
 
     // For COD, use two-step flow: first show shipping details, then confirm
-    if (method === 'cod') {
-        handleCODFlow(submitBtn, submitBtnText);
-        return;
-    }
-
-    // Standard card payment flow
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-        <div class="spinner"></div>
-        <span>Processing...</span>
-    `;
-
-    // Simulate payment processing
-    setTimeout(() => {
-        // Generate order ID
-        const orderId = generateOrderId();
-
-        // Clear cart
-        clearCart();
-
-        // Show success modal
-        showOrderSuccess(orderId, method);
-
-        // Reset button
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-            <span id="submit-btn-text">Pay Now</span>
-        `;
-    }, 2000);
+    handleCODFlow(submitBtn, submitBtnText);
 }
 
 // Handle COD two-step flow: show shipping details, then confirm
@@ -512,23 +389,47 @@ function handleCODFlow(submitBtn, submitBtnText) {
             // Clear cart
             clearCart();
 
-            // Show success modal
-            showOrderSuccess(codOrderId, 'cod');
+            // Store order data for confirmation page
+            const delivery = getSelectedDeliveryMethod();
+            const now = new Date();
+            const deliveryDate = new Date(now.getTime() + delivery.days * 24 * 60 * 60 * 1000);
+            const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
 
-            // Hide shipping section
-            setTimeout(() => {
-                shippingSection.style.display = 'none';
-            }, 300);
+            const fullName = document.getElementById('full-name').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const postal = document.getElementById('postal').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
 
-            // Reset button
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                <span id="submit-btn-text">Pay Now</span>
-            `;
+            const subtotal = getCartSubtotal();
+            const shipping = getShippingCost();
+            const tax = getTaxAmount();
+            const total = subtotal + shipping + tax;
+
+            const orderData = {
+                orderId: codOrderId,
+                fullName,
+                address,
+                city,
+                postal,
+                phone,
+                email,
+                deliveryMethod: delivery.value === 'standard' ? 'Standard' : 'Express',
+                deliveryDays: delivery.days,
+                deliveryDate: deliveryDateStr,
+                total: total
+            };
+
+            localStorage.setItem('lastOrder', JSON.stringify(orderData));
+
+            // Redirect to order confirmation page
+            window.location.href = 'order-confirmation.html';
         }, 1500);
     }
 }
@@ -606,38 +507,3 @@ function generateOrderId() {
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `SH-${timestamp}-${random}`;
 }
-
-// Show order success modal
-function showOrderSuccess(orderId, method) {
-    const modal = document.getElementById('success-modal');
-    const orderIdEl = document.getElementById('order-id');
-    const modalContent = modal.querySelector('.modal-content');
-
-    orderIdEl.textContent = orderId;
-
-    // Update success message based on payment method
-    if (method === 'cod') {
-        const delivery = getSelectedDeliveryMethod();
-        const daysText = delivery.days <= 2 ? '1-2 business days' : '3-5 business days';
-        modalContent.querySelector('h2').textContent = 'Order Placed!';
-        modalContent.querySelector('.success-message').textContent = 'Your order has been confirmed. You will pay on delivery.';
-        modalContent.querySelector('.success-details').textContent = `Your order will be delivered within ${daysText}. Please have cash ready.`;
-    } else {
-        modalContent.querySelector('h2').textContent = 'Payment Successful!';
-        modalContent.querySelector('.success-message').textContent = 'Your order has been confirmed and payment processed.';
-        modalContent.querySelector('.success-details').textContent = 'You will receive your sneakers within 3-5 business days.';
-    }
-
-    modal.classList.add('active');
-
-    // Prevent body scroll
-    document.body.style.overflow = 'hidden';
-}
-
-// Close modal on click outside
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('success-modal');
-    if (e.target === modal) {
-        // Don't close - user must use buttons
-    }
-});
