@@ -14,7 +14,7 @@ This document outlines all the requirements specified for the college demo proje
 | 2 | Product Display Page | ✅ Complete | Product grid with cards showing image, name, brand, price, rating, sizes, add to cart |
 | 3 | Shopping Cart View Page | ✅ Complete | Cart items with quantity controls, remove option, totals calculation |
 | 4 | Payment Page | ✅ Complete | Order summary, customer details form, payment details form with validation |
-| 5 | GitHub Repository | ✅ Complete | Dedicated page with upload instructions and commands |
+| 5 | Project Documentation | ✅ Complete | README, PROJECT_LOG, REQUIREMENTS documented |
 | 6 | Responsive Design | ✅ Complete | Mobile-first approach, works on all screen sizes |
 | 7 | User-friendly UI | ✅ Complete | Modern design, intuitive navigation, smooth animations |
 | 8 | Navigation | ✅ Complete | Consistent navbar across all pages |
@@ -93,14 +93,14 @@ This document outlines all the requirements specified for the college demo proje
 | Expiry Date | Required, MM/YY, not expired | ✅ |
 | CVV | Required, 3-4 digits | ✅ |
 
-### 6. GitHub Preparation
+### 6. Deployment Preparation
 
 | Requirement | Status | Implementation |
 |-------------|--------|----------------|
 | .gitignore file | ✅ | Includes common ignore patterns |
 | README.md | ✅ | Complete project documentation |
-| Upload instructions | ✅ | On github.html page |
-| Git commands provided | ✅ | Step-by-step instructions |
+| Documentation files | ✅ | PROJECT_LOG.md, REQUIREMENTS.md |
+| Git commands documented | ✅ | In README.md and PROJECT_LOG.md |
 
 ### 7. Technical Requirements
 
@@ -148,7 +148,7 @@ This document outlines all the requirements specified for the college demo proje
 - [x] README complete
 - [x] Project log maintained
 - [x] Requirements documented
-- [x] Ready for GitHub upload
+- [x] Ready for deployment
 
 ---
 
