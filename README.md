@@ -1,149 +1,225 @@
-# Sneaker Store - Static Web Application
+# SneakerHub - Premium Sneaker Store
 
-A responsive, user-friendly e-commerce website for sneakers built using only HTML, CSS, and vanilla JavaScript. This is a college demo project demonstrating modern web development practices without any frameworks.
+A modern, responsive e-commerce web application for sneakers built with HTML, CSS, and vanilla JavaScript.
 
-## Project Description
+![SneakerHub Preview](assets/images/hero-sneaker.svg)
 
-Sneaker Store is a complete front-end web application that simulates an online sneaker shopping experience. It features a modern, clean design with smooth animations, responsive layout, and full shopping cart functionality using localStorage for data persistence.
+## Description
+
+SneakerHub is a complete static e-commerce web application designed as a college demo project. It showcases a modern sneaker store with full shopping cart functionality, product filtering, search capabilities, and a secure checkout process - all built without any frameworks or libraries.
 
 ## Features
 
-- **Responsive Design**: Works seamlessly on mobile, tablet, and desktop devices
-- **Product Catalog**: Browse 12 sneakers with detailed information
-- **Search & Filter**: Search by name/brand, filter by category, sort by price
-- **Shopping Cart**: Add items, adjust quantities, remove products
-- **Persistent Cart**: Cart data saved in localStorage
-- **Form Validation**: Complete client-side validation on payment form
-- **Modern UI**: Clean design with CSS animations and transitions
-- **No Frameworks**: Built with pure HTML, CSS, and JavaScript
+### Product Catalog
+- 12 premium sneakers from top brands (Nike, Adidas, Puma, Jordan, etc.)
+- Responsive product cards with hover effects
+- Category badges (Running, Casual, Sports)
+- Star ratings display
+- Size selector for each product
 
-## Pages Included
+### Search & Filter
+- Real-time search by product name or brand
+- Filter by category (Running, Casual, Sports)
+- Sort by price (Low to High, High to Low)
+- Dynamic results count
 
-| Page | File | Description |
-|------|------|-------------|
-| Landing Page | `index.html` | Hero section, featured products, features, testimonials |
-| Products Page | `products.html` | Product grid with search, filter, and sort functionality |
-| Shopping Cart | `cart.html` | Cart management with quantity controls and totals |
-| Payment Page | `payment.html` | Checkout form with validation |
-| GitHub Info | `github.html` | Repository information and upload instructions |
+### Shopping Cart
+- Add products with size selection
+- Quantity controls (increase/decrease)
+- Remove individual items or clear entire cart
+- Persistent cart using localStorage
+- Real-time cart badge updates
+
+### Checkout
+- Order summary with item breakdown
+- Customer details form
+- Payment card form
+- Full client-side validation
+- Luhn algorithm for card validation
+- Success modal with order confirmation
+- Auto-generated order IDs
+
+### User Experience
+- Responsive design (mobile, tablet, desktop)
+- Smooth animations and transitions
+- Toast notifications for user feedback
+- Loading states for actions
+- Empty state messages
+
+## Pages
+
+| Page | Description |
+|------|-------------|
+| `index.html` | Landing page with hero section, features, featured products, newsletter |
+| `products.html` | Product catalog with search, filter, and sort functionality |
+| `cart.html` | Shopping cart management |
+| `payment.html` | Checkout form with validation |
+| `github.html` | GitHub repository information |
 
 ## Technologies Used
 
-- **HTML5**: Semantic markup, accessible forms
-- **CSS3**: Flexbox, Grid, CSS Variables, Animations
-- **JavaScript**: ES6+, localStorage, DOM manipulation
-- **SVG**: Vector graphics for sneaker images
+- **HTML5** - Semantic markup and structure
+- **CSS3** - Styling with CSS variables, Flexbox, Grid, animations
+- **JavaScript (ES6+)** - DOM manipulation, localStorage, form validation
+- **SVG** - Vector graphics for icons and product images
+- **LocalStorage API** - Cart persistence
 
 ## Folder Structure
 
 ```
 sneaker-store/
 ├── index.html              # Landing page
-├── products.html           # Product listing page
-├── cart.html               # Shopping cart page
+├── products.html           # Products catalog
+├── cart.html               # Shopping cart
 ├── payment.html            # Checkout page
-├── github.html             # GitHub information page
-├── README.md               # Project documentation
+├── github.html             # GitHub info
+├── README.md               # Documentation
 ├── .gitignore              # Git ignore file
 ├── css/
 │   └── style.css           # Main stylesheet
 ├── js/
-│   ├── main.js             # Common functionality
-│   ├── products.js         # Product data and helpers
-│   ├── cart.js             # Cart management
-│   └── payment.js          # Payment form handling
+│   ├── main.js             # Core functions (nav, notifications)
+│   ├── products.js         # Product data and helper functions
+│   ├── cart.js             # Cart logic and localStorage
+│   └── payment.js          # Payment form validation
 ├── assets/
-│   ├── images/             # SVG sneaker images
-│   └── favicon.svg         # Site favicon
+│   ├── favicon.svg         # Site favicon
+│   └── images/             # SVG images
+│       ├── hero-sneaker.svg
+│       └── sneaker1-12.svg
 └── docs/
     ├── PROJECT_LOG.md      # Development log
-    └── REQUIREMENTS.md     # Project requirements
+    └── REQUIREMENTS.md     # Requirements checklist
 ```
 
-## How to Run the Project
+## How to Run
 
-### Option 1: Direct Browser Opening
-Simply double-click on `index.html` to open it in your default browser.
+### Option 1: Open Directly
+Simply open `index.html` in your web browser.
 
-### Option 2: Local Server (Recommended)
-Using Python:
+### Option 2: Local Server
 ```bash
-# Python 3
+# Using Python
 python -m http.server 8000
 
-# Then open http://localhost:8000 in your browser
+# Using Node.js
+npx serve
+
+# Using VS Code
+# Install "Live Server" extension and click "Go Live"
 ```
 
-Using Node.js:
-```bash
-# Install serve globally
-npm install -g serve
+Then visit `http://localhost:8000`
 
-# Run server
-serve .
+## How to Use
 
-# Open the provided localhost URL
-```
+### Browsing Products
+1. Navigate to **Products** page
+2. Use the search bar to find specific sneakers
+3. Filter by category using the dropdown
+4. Sort by price if needed
 
-Using VS Code:
-- Install "Live Server" extension
-- Right-click on `index.html` and select "Open with Live Server"
+### Adding to Cart
+1. Click on a product card
+2. Select your size from the size buttons
+3. Click "Add to Cart" button
+4. A success notification will appear
 
-## How to Use the Website
+### Managing Cart
+1. Click **Cart** in navigation
+2. Adjust quantities using +/- buttons
+3. Remove items with the trash icon
+4. Clear entire cart with "Clear Cart" button
 
-1. **Browse Products**: Navigate to Products page to see all sneakers
-2. **Search/Filter**: Use the search bar and filters to find specific products
-3. **Add to Cart**: Select your size and click "Add to Cart"
-4. **View Cart**: Click on "Cart" in the navigation to review items
-5. **Checkout**: Click "Proceed to Payment" and fill out the form
-6. **Complete Order**: Submit the form to see order confirmation
+### Checkout
+1. Review order summary
+2. Fill in customer details
+3. Enter payment information
+4. Click "Pay Now"
+5. Receive order confirmation
 
-## Form Validation Details
+## Validation Details
 
-The payment form includes comprehensive validation:
-
+### Customer Form
 | Field | Validation Rules |
 |-------|-----------------|
-| Full Name | Required, letters and spaces only, minimum 2 characters |
+| Full Name | Required, letters only, min 2 characters |
 | Email | Required, valid email format |
 | Phone | Required, 10 digits |
-| Address | Required, minimum 5 characters |
+| Address | Required, min 5 characters |
 | City | Required, letters only |
-| Postal Code | Required, 5-6 digits |
-| Cardholder Name | Required, letters and spaces only |
-| Card Number | Required, 16 digits, Luhn algorithm validation |
+| Postal Code | Required, 5-6 characters |
+
+### Payment Form
+| Field | Validation Rules |
+|-------|-----------------|
+| Cardholder Name | Required, letters only |
+| Card Number | Required, 16 digits, Luhn algorithm |
 | Expiry Date | Required, MM/YY format, not expired |
 | CVV | Required, 3-4 digits |
 
+### Card Number Validation
+- Uses **Luhn algorithm** to verify card validity
+- Automatic formatting with spaces (1234 5678 9012 3456)
+- Accepts Visa, Mastercard, and American Express
+
+## Pricing
+
+- All prices are in USD
+- Free shipping on orders over $100
+- 8% tax applied to all orders
+- Subtotal, shipping, tax, and total displayed in cart and checkout
+
 ## GitHub Repository
 
-This project is prepared for GitHub upload. Visit the GitHub page (`github.html`) for detailed instructions on how to upload this project to your repository.
+[GitHub Repository Link Placeholder]
 
-**Repository Link**: `https://github.com/YOUR_USERNAME/sneaker-store`
-
-## Screenshots
-
-*Screenshots can be added here after project completion*
+Replace this with your actual repository URL before submission.
 
 ## Future Improvements
 
-- Add user authentication system
-- Implement backend with database
-- Add product reviews and ratings
-- Include wishlist functionality
-- Add multiple product images
-- Implement product comparison feature
-- Add order history tracking
-- Integrate real payment gateway
-- Add admin panel for product management
-- Implement email notifications
+1. **Backend Integration**
+   - Connect to a real database for product management
+   - Implement server-side payment processing
+   - Add user authentication and accounts
 
-## Author
+2. **Enhanced Features**
+   - Product reviews and ratings
+   - Wishlist functionality
+   - Size guides and fit recommendations
+   - Product comparison tool
 
-**College Demo Project**
+3. **Performance**
+   - Lazy loading for product images
+   - Image optimization
+   - Caching strategies
 
-Created as part of web development coursework to demonstrate proficiency in HTML, CSS, and JavaScript.
+4. **Accessibility**
+   - Enhanced keyboard navigation
+   - Screen reader optimization
+   - High contrast mode
+
+5. **Additional Pages**
+   - About Us page
+   - Contact page with form
+   - FAQ section
+   - Order tracking
+
+6. **Mobile App**
+   - Progressive Web App (PWA) support
+   - Push notifications
+   - Offline functionality
+
+## Credits
+
+- **Project**: College Demo Project
+- **Author**: Zohair K
+- **Date**: August 2026
+
+## License
+
+This project is for educational purposes only. All product names, brands, and images are used for demonstration purposes.
 
 ---
 
-&copy; 2026 SneakerStore. All rights reserved.
+© 2026 SneakerHub. All rights reserved.
