@@ -16,6 +16,7 @@ function initPaymentPage() {
     } else {
         renderOrderSummary();
         setupFormValidation();
+        setupPaymentMethodToggle();
     }
 }
 
@@ -66,90 +67,49 @@ function renderOrderSummary() {
     document.getElementById('summary-total').textContent = `$${total.toFixed(2)}`;
 }
 
-// Get selected delivery method
-function getSelectedDeliveryMethod() {
-    const radio = document.querySelector('input[name="deliveryMethod"]:checked');
-    if (!radio) return { value: 'standard', days: 5, cost: 0 };
-    return {
-        value: radio.value,
-        days: parseInt(radio.dataset.days),
-        cost: parseFloat(radio.dataset.cost)
-    };
-}
-
-// Get shipping cost including delivery method
+// Get shipping cost (free over $100)
 function getShippingCost() {
     const subtotal = getCartSubtotal();
-    const baseShipping = subtotal >= 100 ? 0 : 9.99;
-    const delivery = getSelectedDeliveryMethod();
-    return baseShipping + delivery.cost;
+    return subtotal >= 100 ? 0 : 9.99;
 }
 
-// Update order summary with delivery method
-function updateDeliverySummary() {
-    const delivery = getSelectedDeliveryMethod();
-    const shippingEl = document.getElementById('summary-shipping');
-    const totalEl = document.getElementById('summary-total');
-
-    if (shippingEl) {
-        const shippingCost = getShippingCost();
-        shippingEl.textContent = shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`;
-    }
-    if (totalEl) {
-        const subtotal = getCartSubtotal();
-        const shipping = getShippingCost();
-        const tax = getTaxAmount();
-        const total = subtotal + shipping + tax;
-        totalEl.textContent = `$${total.toFixed(2)}`;
-    }
+// Get tax amount (8% tax)
+function getTaxAmount() {
+    return getCartSubtotal() * 0.08;
 }
 
-// Update shipping details if visible (COD step 2)
-function updateShippingDetailsIfVisible() {
-    const shippingSection = document.getElementById('shipping-details-section');
-    if (shippingSection && shippingSection.classList.contains('visible')) {
-        const delivery = getSelectedDeliveryMethod();
-        const now = new Date();
-        const deliveryDate = new Date(now.getTime() + delivery.days * 24 * 60 * 60 * 1000);
-        const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+// Get grand total
+function getGrandTotal() {
+    return getCartSubtotal() + getShippingCost() + getTaxAmount();
+}
+
+// Setup payment method toggle
+function setupPaymentMethodToggle() {
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const upiDetails = document.getElementById('upi-details');
+    const cardDetails = document.getElementById('card-details');
+
+    paymentMethods.forEach(method => {
+        const radio = method.querySelector('input[type="radio"]');
+        radio.addEventListener('change', function() {
+            // Hide all details sections
+            upiDetails.style.display = 'none';
+            cardDetails.style.display = 'none';
+
+            // Show selected method's details
+            if (this.value === 'upi') {
+                upiDetails.style.display = 'block';
+            } else if (this.value === 'card') {
+                cardDetails.style.display = 'block';
+            }
         });
-
-        const estimatedDeliveryEl = shippingSection.querySelector('.shipping-detail-value:nth-of-type(2)');
-        if (estimatedDeliveryEl) {
-            estimatedDeliveryEl.textContent = `${deliveryDateStr} (${delivery.days} business days)`;
-        }
-
-        const amountEl = shippingSection.querySelector('.shipping-detail-value:last-of-type');
-        if (amountEl) {
-            const subtotal = getCartSubtotal();
-            const shipping = getShippingCost();
-            const tax = getTaxAmount();
-            const total = subtotal + shipping + tax;
-            amountEl.textContent = `$${total.toFixed(2)}`;
-        }
-    }
+    });
 }
 
 // Setup form validation
 function setupFormValidation() {
     const form = document.getElementById('payment-form');
-    const inputs = form.querySelectorAll('input');
-
-    // Delivery method selector
-    const deliveryRadios = form.querySelectorAll('input[name="deliveryMethod"]');
-    deliveryRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            updateDeliverySummary();
-            updateShippingDetailsIfVisible();
-        });
-    });
-
-    // Initial delivery summary update
-    updateDeliverySummary();
+    const inputs = form.querySelectorAll('input, textarea');
 
     // Add input event listeners for real-time validation
     inputs.forEach(input => {
@@ -157,8 +117,15 @@ function setupFormValidation() {
             // Format specific fields
             if (input.id === 'phone') {
                 input.value = input.value.replace(/\D/g, '').substring(0, 10);
-            } else if (input.id === 'postal') {
-                input.value = input.value.replace(/[^0-9a-zA-Z]/g, '').substring(0, 6);
+            } else if (input.id === 'card-number') {
+                input.value = input.value.replace(/\D/g, '').substring(0, 16);
+            } else if (input.id === 'expiry-date') {
+                input.value = input.value.replace(/\D/g, '').substring(0, 4);
+                if (input.value.length >= 2 && !input.value.includes('/')) {
+                    input.value = input.value.substring(0, 2) + '/' + input.value.substring(2);
+                }
+            } else if (input.id === 'cvv') {
+                input.value = input.value.replace(/\D/g, '').substring(0, 4);
             }
 
             // Validate field
@@ -180,17 +147,9 @@ function setupFormValidation() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Validate all fields
-        let isValid = true;
-        inputs.forEach(input => {
-            if (!validateField(input)) {
-                isValid = false;
-            }
-        });
-
-        if (!isValid) {
+        // Validate all required fields based on selected payment method
+        if (!validateForm()) {
             showNotification('Please fix the errors in the form', 'error');
-            // Scroll to first error
             const firstError = form.querySelector('.form-group.error');
             if (firstError) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -198,7 +157,7 @@ function setupFormValidation() {
             return;
         }
 
-        // Process payment
+        // Process payment based on selected method
         processPayment();
     });
 }
@@ -208,6 +167,9 @@ function validateField(input) {
     const value = input.value.trim();
     const id = input.id;
     let errorMessage = '';
+
+    // Get selected payment method
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'cod';
 
     // Validation rules
     switch (id) {
@@ -221,79 +183,73 @@ function validateField(input) {
             }
             break;
 
-        case 'email':
-            if (!value) {
-                errorMessage = 'Email address is required';
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                errorMessage = 'Please enter a valid email address';
-            }
-            break;
-
         case 'phone':
             if (!value) {
                 errorMessage = 'Phone number is required';
-            } else if (value.length < 10) {
+            } else if (!/^\d{10}$/.test(value)) {
                 errorMessage = 'Phone number must be 10 digits';
             }
             break;
 
         case 'address':
             if (!value) {
-                errorMessage = 'Street address is required';
-            } else if (value.length < 5) {
+                errorMessage = 'Address is required';
+            } else if (value.length < 10) {
                 errorMessage = 'Please enter a complete address';
             }
             break;
 
-        case 'city':
-            if (!value) {
-                errorMessage = 'City is required';
-            } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-                errorMessage = 'City should contain only letters';
+        case 'upi-id':
+            // Only validate if UPI method selected
+            if (paymentMethod === 'upi') {
+                if (!value) {
+                    errorMessage = 'UPI ID is required';
+                } else if (!/^[\w.-]+@[\w.-]+$/.test(value)) {
+                    errorMessage = 'Please enter a valid UPI ID (e.g., name@upi)';
+                }
             }
             break;
 
-        case 'postal':
-            if (!value) {
-                errorMessage = 'Postal code is required';
-            } else if (value.length < 5) {
-                errorMessage = 'Postal code must be at least 5 characters';
-            }
-            break;
-
-        case 'cardholder':
-            if (!value) {
-                errorMessage = 'Cardholder name is required';
-            } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-                errorMessage = 'Name should contain only letters and spaces';
+        case 'cardholder-name':
+            // Only validate if Card method selected
+            if (paymentMethod === 'card') {
+                if (!value) {
+                    errorMessage = 'Cardholder name is required';
+                } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+                    errorMessage = 'Name should contain only letters and spaces';
+                }
             }
             break;
 
         case 'card-number':
-            const cardNumber = value.replace(/\s/g, '');
-            if (!cardNumber) {
-                errorMessage = 'Card number is required';
-            } else if (cardNumber.length < 16) {
-                errorMessage = 'Card number must be 16 digits';
-            } else if (!luhnCheck(cardNumber)) {
-                errorMessage = 'Invalid card number';
+            // Only validate if Card method selected
+            if (paymentMethod === 'card') {
+                if (!value) {
+                    errorMessage = 'Card number is required';
+                } else if (!/^\d{16}$/.test(value.replace(/\s/g, ''))) {
+                    errorMessage = 'Card number must be 16 digits';
+                } else if (!luhnCheck(value.replace(/\s/g, ''))) {
+                    errorMessage = 'Invalid card number';
+                }
             }
             break;
 
-        case 'expiry':
-            if (!value) {
-                errorMessage = 'Expiry date is required';
-            } else if (!/^\d{2}\/\d{2}$/.test(value)) {
-                errorMessage = 'Use MM/YY format';
-            } else {
-                const [month, year] = value.split('/').map(Number);
-                if (month < 1 || month > 12) {
-                    errorMessage = 'Invalid month (01-12)';
+        case 'expiry-date':
+            // Only validate if Card method selected
+            if (paymentMethod === 'card') {
+                if (!value) {
+                    errorMessage = 'Expiry date is required';
+                } else if (!/^\d{2}\/\d{2}$/.test(value)) {
+                    errorMessage = 'Use MM/YY format';
                 } else {
+                    const month = parseInt(value.substring(0, 2));
+                    const year = parseInt('20' + value.substring(3, 2));
                     const now = new Date();
-                    const currentYear = now.getFullYear() % 100;
+                    const currentYear = now.getFullYear();
                     const currentMonth = now.getMonth() + 1;
-                    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                    if (month < 1 || month > 12) {
+                        errorMessage = 'Invalid month (01-12)';
+                    } else if (year < currentYear || (year === currentYear && month < currentMonth)) {
                         errorMessage = 'Card has expired';
                     }
                 }
@@ -301,10 +257,13 @@ function validateField(input) {
             break;
 
         case 'cvv':
-            if (!value) {
-                errorMessage = 'CVV is required';
-            } else if (value.length < 3) {
-                errorMessage = 'CVV must be 3 or 4 digits';
+            // Only validate if Card method selected
+            if (paymentMethod === 'card') {
+                if (!value) {
+                    errorMessage = 'CVV is required';
+                } else if (!/^\d{3,4}$/.test(value)) {
+                    errorMessage = 'CVV must be 3 or 4 digits';
+                }
             }
             break;
     }
@@ -319,186 +278,136 @@ function validateField(input) {
     }
 }
 
+// Validate entire form
+function validateForm() {
+    const form = document.getElementById('payment-form');
+    const inputs = form.querySelectorAll('input[required], textarea[required]');
+    let isValid = true;
+
+    // Always required: full-name, phone, address
+    const alwaysRequired = ['full-name', 'phone', 'address'];
+    alwaysRequired.forEach(id => {
+        const input = document.getElementById(id);
+        if (input && !validateField(input)) {
+            isValid = false;
+        }
+    });
+
+    // Payment method specific validation
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'cod';
+
+    if (paymentMethod === 'upi') {
+        const upiId = document.getElementById('upi-id');
+        if (upiId && !validateField(upiId)) {
+            isValid = false;
+        }
+    } else if (paymentMethod === 'card') {
+        const cardFields = ['cardholder-name', 'card-number', 'expiry-date', 'cvv'];
+        cardFields.forEach(id => {
+            const input = document.getElementById(id);
+            if (input && !validateField(input)) {
+                isValid = false;
+            }
+        });
+    }
+
+    return isValid;
+}
+
 // Show error message
 function showError(input, message) {
     const formGroup = input.closest('.form-group');
+    if (!formGroup) return;
     formGroup.classList.add('error');
     input.classList.add('error');
-
     const errorEl = formGroup.querySelector('.error-message');
-    errorEl.textContent = message;
+    if (errorEl) errorEl.textContent = message;
 }
 
 // Clear error message
 function clearError(input) {
     const formGroup = input.closest('.form-group');
+    if (!formGroup) return;
     formGroup.classList.remove('error');
     input.classList.remove('error');
-
     const errorEl = formGroup.querySelector('.error-message');
-    errorEl.textContent = '';
+    if (errorEl) errorEl.textContent = '';
+}
+
+// Luhn algorithm for card validation
+function luhnCheck(cardNumber) {
+    let sum = 0;
+    let isEven = false;
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber[i], 10);
+        if (isEven) {
+            digit *= 2;
+            if (digit > 9) digit -= 9;
+        }
+        sum += digit;
+        isEven = !isEven;
+    }
+    return sum % 10 === 0;
 }
 
 // Process payment
 function processPayment() {
     const submitBtn = document.getElementById('submit-btn');
     const submitBtnText = document.getElementById('submit-btn-text');
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'cod';
 
-    // For COD, use two-step flow: first show shipping details, then confirm
-    handleCODFlow(submitBtn, submitBtnText);
-}
-
-// Handle COD two-step flow: show shipping details, then confirm
-let codStep = 1;
-let codOrderId = null;
-
-function handleCODFlow(submitBtn, submitBtnText) {
-    const shippingSection = document.getElementById('shipping-details-section');
-    const shippingDetails = document.getElementById('shipping-details');
-
-    if (codStep === 1) {
-        // Step 1: Generate shipping details and show them
-        codOrderId = generateOrderId();
-        codStep = 2;
-
-        // Generate shipping details HTML
-        const details = generateShippingDetails(codOrderId);
-        shippingDetails.innerHTML = details;
-
-        // Show shipping section with animation
-        shippingSection.style.display = 'block';
-        setTimeout(() => {
-            shippingSection.classList.add('visible');
-        }, 10);
-
-        // Update button text
-        submitBtnText.textContent = 'Proceed to Delivery';
-        submitBtn.disabled = false;
-    } else if (codStep === 2) {
-        // Step 2: Confirm and place order
-        codStep = 1;
-        shippingSection.classList.remove('visible');
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <div class="spinner"></div>
-            <span>Placing Order...</span>
-        `;
-
-        setTimeout(() => {
-            // Clear cart
-            clearCart();
-
-            // Store order data for confirmation page
-            const delivery = getSelectedDeliveryMethod();
-            const now = new Date();
-            const deliveryDate = new Date(now.getTime() + delivery.days * 24 * 60 * 60 * 1000);
-            const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            const fullName = document.getElementById('full-name').value;
-            const address = document.getElementById('address').value;
-            const city = document.getElementById('city').value;
-            const postal = document.getElementById('postal').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-
-            const subtotal = getCartSubtotal();
-            const shipping = getShippingCost();
-            const tax = getTaxAmount();
-            const total = subtotal + shipping + tax;
-
-            const orderData = {
-                orderId: codOrderId,
-                fullName,
-                address,
-                city,
-                postal,
-                phone,
-                email,
-                deliveryMethod: delivery.value === 'standard' ? 'Standard' : 'Express',
-                deliveryDays: delivery.days,
-                deliveryDate: deliveryDateStr,
-                total: total
-            };
-
-            localStorage.setItem('lastOrder', JSON.stringify(orderData));
-
-            // Redirect to order confirmation page
-            window.location.href = 'order-confirmation.html';
-        }, 1500);
-    }
-}
-
-// Generate shipping details for COD
-function generateShippingDetails(orderId) {
-    const delivery = getSelectedDeliveryMethod();
-    const now = new Date();
-    const deliveryDate = new Date(now.getTime() + delivery.days * 24 * 60 * 60 * 1000);
-    const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    const shippingCost = getShippingCost();
-    const subtotal = getCartSubtotal();
-    const total = getGrandTotal();
-
-    // Get customer details from form
-    const fullName = document.getElementById('full-name').value;
-    const address = document.getElementById('address').value;
-    const city = document.getElementById('city').value;
-    const postal = document.getElementById('postal').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
-
-    const items = cart.map(item => {
-        const product = getProductById(item.productId);
-        return product ? `${product.name} (Size: ${item.size}) x${item.quantity}` : '';
-    }).filter(Boolean).join(', ');
-
-    return `
-        <div class="shipping-detail-row">
-            <div class="shipping-detail-label">Order ID</div>
-            <div class="shipping-detail-value">${orderId}</div>
-        </div>
-        <div class="shipping-detail-row">
-            <div class="shipping-detail-label">Estimated Delivery</div>
-            <div class="shipping-detail-value">${deliveryDateStr} (${delivery.days} business days)</div>
-        </div>
-        <div class="shipping-detail-row">
-            <div class="shipping-detail-label">Delivery Method</div>
-            <div class="shipping-detail-value">${delivery.value === 'standard' ? 'Standard' : 'Express'}</div>
-        </div>
-        <div class="shipping-detail-row">
-            <div class="shipping-detail-label">Shipping Address</div>
-            <div class="shipping-detail-value">
-                ${fullName}<br>
-                ${address}<br>
-                ${city} ${postal}<br>
-                Phone: ${phone}
-            </div>
-        </div>
-        <div class="shipping-detail-row">
-            <div class="shipping-detail-label">Contact Email</div>
-            <div class="shipping-detail-value">${email}</div>
-        </div>
-        <div class="shipping-detail-row">
-            <div class="shipping-detail-label">Items</div>
-            <div class="shipping-detail-value">${items}</div>
-        </div>
-        <div class="shipping-detail-row total">
-            <div class="shipping-detail-label">Amount to Pay on Delivery</div>
-            <div class="shipping-detail-value">$${total.toFixed(2)}</div>
-        </div>
-        <p class="shipping-note">Please have exact cash amount ready for delivery.</p>
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+        <div class="spinner"></div>
+        <span>Processing...</span>
     `;
+
+    // Simulate payment processing
+    setTimeout(() => {
+        // Clear cart
+        clearCart();
+
+        // Prepare order data
+        const now = new Date();
+        const deliveryDate = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000); // 5 business days default
+        const deliveryDateStr = deliveryDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const fullName = document.getElementById('full-name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const email = document.getElementById('email')?.value || '';
+
+        const subtotal = getCartSubtotal();
+        const shipping = getShippingCost();
+        const tax = getTaxAmount();
+        const total = subtotal + shipping + tax;
+
+        const orderId = generateOrderId();
+
+        const orderData = {
+            orderId: orderId,
+            fullName: fullName,
+            phone: phone,
+            address: address,
+            email: email,
+            paymentMethod: paymentMethod.toUpperCase(),
+            deliveryDays: 5,
+            deliveryDate: deliveryDateStr,
+            total: total
+        };
+
+        // Store order data for confirmation page
+        localStorage.setItem('lastOrder', JSON.stringify(orderData));
+
+        // Redirect to order confirmation page
+        window.location.href = 'order-confirmation.html';
+    }, 1500);
 }
 
 // Generate order ID
@@ -506,4 +415,39 @@ function generateOrderId() {
     const timestamp = Date.now().toString(36).toUpperCase();
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `SH-${timestamp}-${random}`;
+}
+
+// Show notification
+function showNotification(message, type = 'success') {
+    // Remove existing notification
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    // Add to DOM
+    document.body.appendChild(notification);
+
+    // Trigger animation
+    setTimeout(() => notification.classList.add('show'), 10);
+
+    // Close button handler
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    });
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
 }
