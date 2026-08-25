@@ -236,29 +236,6 @@ SneakerHub is a static e-commerce web application for sneakers, built as a colle
 
 ---
 
-## Deployment Steps
-
-```bash
-# Initialize Git repository
-git init
-
-# Add all files
-git add .
-
-# Create initial commit
-git commit -m "Initial commit: SneakerHub e-commerce application"
-
-# Create main branch
-git branch -M main
-
-# Add remote repository (replace with your URL)
-git remote add origin https://github.com/YOUR_USERNAME/sneaker-store.git
-
-# Push to remote
-git push -u origin main
-```
-
----
 
 ## Project Statistics
 
