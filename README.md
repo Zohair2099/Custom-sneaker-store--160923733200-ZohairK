@@ -2,11 +2,10 @@
 
 A modern, responsive e-commerce web application for sneakers built with HTML, CSS, and vanilla JavaScript.
 
-![SneakerHub Preview](assets/images/hero-sneaker.svg)
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Description](#description)
 - [Features](#features)
@@ -42,7 +41,7 @@ This project demonstrates proficiency in:
 
 ## Features
 
-### 🛍️ Product Catalog
+### Product Catalog
 - **12 premium sneakers** from top brands (Nike, Adidas, Puma, Jordan, Reebok, New Balance, Under Armour)
 - Responsive product cards with smooth hover effects and animations
 - Color-coded category badges (Running = purple, Casual = pink, Sports = blue)
@@ -50,7 +49,7 @@ This project demonstrates proficiency in:
 - Interactive size selector with visual feedback
 - Product overlay with "Add to Cart" on hover
 
-### 🔍 Search & Filter System
+### Search & Filter System
 - **Real-time search** by product name or brand (300ms debounce)
 - **Category filter** dropdown: All, Running, Casual, Sports
 - **Price sorting**: Default, Low to High, High to Low
@@ -67,7 +66,7 @@ This project demonstrates proficiency in:
 - Automatic tax calculation (8%)
 - Subtotal, shipping, tax, and grand total display
 
-### 💳 Checkout System
+### Checkout System
 - **Order summary** with item breakdown (image, name, size, quantity, price)
 - **Customer details form**: Full name, email, phone, address, city, postal code
 - **Payment form**: Cardholder name, card number, expiry date, CVV
@@ -78,7 +77,7 @@ This project demonstrates proficiency in:
 - **Success modal** with auto-generated order ID (format: `SH-TIMESTAMP-RANDOM`)
 - Cart automatically clears after successful order
 
-### 🎨 User Experience
+### User Experience
 - Fully responsive design (mobile, tablet, desktop)
 - Smooth animations and transitions throughout
 - Toast notifications for user feedback (success/error)
@@ -215,21 +214,21 @@ php -S localhost:8000
 
 ## How to Use
 
-### 🏠 Browsing Products
+### Browsing Products
 1. Open the application → **Products** page
 2. **Search**: Type in search box (filters by name/brand in real-time)
 3. **Filter**: Select category from dropdown (Running, Casual, Sports)
 4. **Sort**: Choose price order from dropdown
 5. Results update instantly with count display
 
-### 🛒 Adding to Cart
+### Adding to Cart
 1. Browse products on Home or Products page
 2. **Select a size** from the size buttons on the product card
 3. Click **"Add to Cart"** button
 4. Success notification appears
 5. Cart badge in navigation updates automatically
 
-### 🛍️ Managing Cart
+### Managing Cart
 1. Click **Cart** in navigation (or badge)
 2. **Adjust quantity**: Use + / - buttons
 3. **Remove item**: Click trash icon
@@ -240,7 +239,7 @@ php -S localhost:8000
    - Tax: 8% of subtotal
    - Total: Subtotal + Shipping + Tax
 
-### 💳 Checkout Process
+### Checkout Process
 1. Click **"Proceed to Payment"** from Cart
 2. **Order Summary**: Review items and totals
 3. **Customer Details** (Section 1):
@@ -430,64 +429,14 @@ let cart = []; // In-memory state
 
 ---
 
-## Future Improvements
-
-### Phase 1: Backend Integration
-- [ ] REST API for product management
-- [ ] Real payment processing (Stripe, PayPal)
-- [ ] User authentication & accounts
-- [ ] Order history & tracking
-- [ ] Database integration (PostgreSQL, MongoDB)
-
-### Phase 2: Enhanced Features
-- [ ] Product reviews & ratings system
-- [ ] Wishlist / favorites
-- [ ] Size guide & fit recommendations
-- [ ] Product comparison tool
-- [ ] Recently viewed products
-- [ ] Related product suggestions
-- [ ] Discount codes & promotions
-- [ ] Gift cards
-
-### Phase 3: Performance & PWA
-- [ ] Lazy loading for images
-- [ ] Service worker for offline support
-- [ ] Progressive Web App manifest
-- [ ] Push notifications for orders
-- [ ] Image optimization (WebP, srcset)
-- [ ] Critical CSS inlining
-- [ ] Resource hints (preconnect, prefetch)
-
-### Phase 4: Accessibility & SEO
-- [ ] Full WCAG 2.1 AA compliance
-- [ ] Enhanced keyboard navigation
-- [ ] Screen reader optimizations
-- [ ] High contrast mode
-- [ ] Reduced motion preferences
-- [ ] Semantic HTML audit
-- [ ] Meta tags for SEO
-- [ ] Structured data (JSON-LD)
-
-### Phase 5: Additional Pages
-- [ ] About Us / Brand Story
-- [ ] Contact page with form
-- [ ] FAQ / Help Center
-- [ ] Order tracking page
-- [ ] Account dashboard
-- [ ] Blog / Sneaker news
-
----
-
-## Credits
-
 - **Project Type**: College Demo Project
 - **Author**: Zohair K
 - **Date**: August 2026
 - **Inspiration**: Modern e-commerce design patterns
 
 ### Asset Credits
-- All product images: Custom SVG placeholders
-- Icons: Custom SVG icons (inline)
+- All product images: Custom png
+- Icons: Custom png icons (inline)
 - Fonts: System fonts (Segoe UI, Tahoma, Geneva, Verdana, sans-serif)
 
 ---
@@ -497,32 +446,6 @@ let cart = []; // In-memory state
 This project is for **educational purposes only**.
 
 All product names, brands, logos, and images are property of their respective owners and are used solely for demonstration purposes in this academic project.
-
----
-
-## Testing Checklist
-
-- [x] All navigation links work correctly
-- [x] Products load and display correctly
-- [x] Search, filter, and sort function properly
-- [x] Add to cart works with size selection
-- [x] Cart quantity updates in real-time
-- [x] Cart totals calculate correctly (subtotal, shipping, tax, total)
-- [x] Payment form validates all fields
-- [x] Inline error messages appear correctly
-- [x] Luhn algorithm validates card numbers
-- [x] Success modal displays with order ID
-- [x] Cart clears after successful payment
-- [x] Cart persists across page refreshes
-- [x] Responsive on all device sizes
-- [x] No console errors in browser
-- [x] Mobile menu toggles correctly
-- [x] Notifications appear and dismiss
-- [x] Empty states show helpful messages
-
----
-
-**Project Status**: ✅ Complete and Ready for Submission
 
 ---
 
