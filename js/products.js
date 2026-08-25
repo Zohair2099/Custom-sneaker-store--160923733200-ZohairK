@@ -9,7 +9,7 @@ const products = [
         brand: "Nike",
         price: 189.99,
         category: "running",
-        image: "assets/images/sneaker1.svg",
+        image: "assets/images/sneaker1.png",
         rating: 4.8,
         description: "Lightweight running sneakers with advanced cushioning technology for maximum comfort during your runs.",
         sizes: [7, 8, 9, 10, 11, 12]
@@ -20,7 +20,7 @@ const products = [
         brand: "Adidas",
         price: 159.99,
         category: "casual",
-        image: "assets/images/sneaker2.svg",
+        image: "assets/images/sneaker2.png",
         rating: 4.6,
         description: "Stylish streetwear sneakers perfect for everyday casual outfits and light activities.",
         sizes: [6, 7, 8, 9, 10, 11]
@@ -31,7 +31,7 @@ const products = [
         brand: "Puma",
         price: 134.99,
         category: "sports",
-        image: "assets/images/sneaker3.svg",
+        image: "assets/images/sneaker3.png",
         rating: 4.5,
         description: "High-performance sports sneakers designed for agility and speed on the court or field.",
         sizes: [7, 8, 9, 10, 11]
@@ -42,7 +42,7 @@ const products = [
         brand: "New Balance",
         price: 124.99,
         category: "casual",
-        image: "assets/images/sneaker4.svg",
+        image: "assets/images/sneaker4.png",
         rating: 4.7,
         description: "Timeless retro design with modern comfort features. Perfect for vintage style lovers.",
         sizes: [6, 7, 8, 9, 10, 11, 12]
@@ -53,7 +53,7 @@ const products = [
         brand: "Nike",
         price: 199.99,
         category: "running",
-        image: "assets/images/sneaker5.svg",
+        image: "assets/images/sneaker5.png",
         rating: 4.9,
         description: "Premium running shoes with cloud-like cushioning. Experience ultimate comfort mile after mile.",
         sizes: [7, 8, 9, 10, 11]
@@ -64,7 +64,7 @@ const products = [
         brand: "Adidas",
         price: 169.99,
         category: "casual",
-        image: "assets/images/sneaker6.svg",
+        image: "assets/images/sneaker6.png",
         rating: 4.4,
         description: "Bold urban design for those who want to stand out. Premium materials and craftsmanship.",
         sizes: [6, 7, 8, 9, 10, 11, 12]
@@ -75,7 +75,7 @@ const products = [
         brand: "Puma",
         price: 144.99,
         category: "sports",
-        image: "assets/images/sneaker7.svg",
+        image: "assets/images/sneaker7.png",
         rating: 4.6,
         description: "Engineered for speed. Lightweight construction with superior grip for competitive sports.",
         sizes: [7, 8, 9, 10, 11]
@@ -86,7 +86,7 @@ const products = [
         brand: "Reebok",
         price: 179.99,
         category: "running",
-        image: "assets/images/sneaker8.svg",
+        image: "assets/images/sneaker8.png",
         rating: 4.7,
         description: "Rugged trail running sneakers with enhanced durability and all-terrain grip.",
         sizes: [7, 8, 9, 10, 11, 12]
@@ -97,7 +97,7 @@ const products = [
         brand: "Jordan",
         price: 219.99,
         category: "sports",
-        image: "assets/images/sneaker9.svg",
+        image: "assets/images/sneaker9.png",
         rating: 4.9,
         description: "Iconic basketball sneakers with legendary style and on-court performance.",
         sizes: [8, 9, 10, 11, 12]
@@ -108,7 +108,7 @@ const products = [
         brand: "Adidas",
         price: 154.99,
         category: "running",
-        image: "assets/images/sneaker10.svg",
+        image: "assets/images/sneaker10.png",
         rating: 4.5,
         description: "Sustainable running shoes made from recycled materials without compromising on performance.",
         sizes: [6, 7, 8, 9, 10, 11]
@@ -119,7 +119,7 @@ const products = [
         brand: "Nike",
         price: 189.99,
         category: "casual",
-        image: "assets/images/sneaker11.svg",
+        image: "assets/images/sneaker11.png",
         rating: 4.6,
         description: "Sleek dark design with reflective accents. Perfect for evening runs and night outings.",
         sizes: [7, 8, 9, 10, 11, 12]
@@ -130,7 +130,7 @@ const products = [
         brand: "Under Armour",
         price: 139.99,
         category: "sports",
-        image: "assets/images/sneaker12.svg",
+        image: "assets/images/sneaker12.png",
         rating: 4.4,
         description: "Flexible training shoes that move with your foot. Ideal for gym workouts and cross-training.",
         sizes: [7, 8, 9, 10, 11]
